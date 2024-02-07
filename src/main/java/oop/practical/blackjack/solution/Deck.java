@@ -12,17 +12,6 @@ public class Deck {
     public Deck(){
         // Generate a standard deck of cards
         cards = new ArrayList<>();
-        String[] suits = {"S", "H", "C", "D"};
-        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-
-        for (String suit : suits) {
-            for (String rank : ranks) {
-                cards.add(rank + suit);
-            }
-        }
-
-        // Shuffle the deck to create a random permutation
-        Collections.shuffle(cards);
     }
 
     public Deck(List<String> cards){
@@ -37,12 +26,16 @@ public class Deck {
     }
 
     public String inspect() {
-        StringBuilder deckString = new StringBuilder("Deck: ");
+        StringBuilder deckString = new StringBuilder("    Deck: ");
+        if(cards.isEmpty()) {
+            deckString.append("(empty)");
+            return deckString.toString();
+        }
         for (String card : cards) {
             deckString.append(card).append(", ");
         }
         // Remove the trailing comma and space
-        if (deckString.length() > "Deck: ".length()) {
+        if (deckString.length() > "    Deck: ".length()) {
             deckString.delete(deckString.length() - 2, deckString.length());
         }
         return deckString.toString();

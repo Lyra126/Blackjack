@@ -37,6 +37,11 @@ public class Player {
         } else {
             isBust = false;
         }
+        if (isBust) {
+            status = "busted";
+        } else {
+            status = "playing";
+        }
     }
 
     // Get the value of the card
@@ -98,7 +103,7 @@ public class Player {
     }
 
     public String inspect() {
-        StringBuilder playerString = new StringBuilder("Player: ");
+        StringBuilder playerString = new StringBuilder("    Player: ");
         String total = String.valueOf(calculateTotal());; // Assuming you have a method to calculate the total value of the player's hand
 
         playerString.append("(").append(total).append("): ");
@@ -108,7 +113,7 @@ public class Player {
         }
 
         // Remove the trailing comma and space
-        if (playerString.length() > "Player: ".length()) {
+        if (playerString.length() > "    Player: ".length()) {
             playerString.delete(playerString.length() - 2, playerString.length());
         }
 

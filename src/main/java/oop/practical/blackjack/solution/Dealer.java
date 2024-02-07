@@ -79,21 +79,24 @@ public class Dealer {
     }
 
     public String inspect() {
-        StringBuilder dealerString = new StringBuilder("Dealer: ");
-        String shownCard = hand.isEmpty() ? "?" : hand.get(1); // Get the second card (first visible card)
-        String total = String.valueOf(calculateTotal()); // Assuming you have a method to calculate the total value of the dealer's hand
+
+
+        StringBuilder dealerString = new StringBuilder("    Dealer: ");
+        String shownCard = hand.isEmpty() ? "?" : String.valueOf(getValue(hand.get(1))); // Get the value of the second card (first visible card)
+        int total = calculateTotal(); // Assuming you have a method to calculate the total value of the dealer's hand
 
         dealerString.append("(? + ").append(shownCard).append("): ");
 
         if (hand.isEmpty()) {
             dealerString.append("?");
         } else {
-            dealerString.append("?, ").append(hand.get(1)); // Append the shown card
+            dealerString.append("?, ").append(hand.get(1)); // Append the shown card value
         }
 
         dealerString.append(" (waiting)");
 
         return dealerString.toString();
+
     }
 
 }

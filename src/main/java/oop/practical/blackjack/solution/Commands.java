@@ -74,24 +74,26 @@ public final class Commands {
 
     //starts the game by dealing initial cards to the player(s) and the dealer, if cards are empty, should use the current deck to deal cards
     public String deal(List<String> cards) {
-        if (cards.isEmpty())
-            return "Error: No cards provided for dealing";
+            if (cards.isEmpty())
+                return "Error: Deck is empty";
 
-        // Clear hands before dealing new cards
-        player.clearHand();
-        dealer.clearHand();
+            // Clear hands before dealing new cards
+            player.clearHand();
+            dealer.clearHand();
 
-        // Deal two cards to each player alternating
-        player.addCard(deck.dealCard());
-        dealer.addCard(deck.dealCard()); // Dealer's first card (face-down)
-        player.addCard(deck.dealCard());
-        dealer.addCard(deck.dealCard());
+        for (int i = 0; i < cards.size(); i++) {
+            if (i % 2 == 0)
+                player.addCard(cards.get(i));
+            else
+                dealer.addCard(cards.get(i));
+        }
+
 
         // Update hand status
-        player.updateHandStatus();
-        dealer.updateHandStatus();
+            player.updateHandStatus();
+            dealer.updateHandStatus();
 
-        return "Initial cards dealt";
+            return "Initial cards dealt";
     }
 
 
@@ -128,7 +130,7 @@ public final class Commands {
             case "deck" -> deck.inspect();
             case "player" -> player.inspect();
             case "dealer" -> dealer.inspect();
-            default -> "Invalid inspection target";
+            default -> " ";
         };
     }
 }
