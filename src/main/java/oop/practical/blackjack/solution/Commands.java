@@ -81,10 +81,11 @@ public final class Commands {
         player.clearHand();
         dealer.clearHand();
 
-        for (String card : cards) {
-            player.addCard(deck.dealCard());
-            dealer.addCard(deck.dealCard());
-        }
+        // Deal two cards to each player alternating
+        player.addCard(deck.dealCard());
+        dealer.addCard(deck.dealCard()); // Dealer's first card (face-down)
+        player.addCard(deck.dealCard());
+        dealer.addCard(deck.dealCard());
 
         // Update hand status
         player.updateHandStatus();
@@ -92,6 +93,7 @@ public final class Commands {
 
         return "Initial cards dealt";
     }
+
 
     // method allows the player to take an additional card from the deck, need to deal a card from the deck to the player's hand.
     public String hit() {

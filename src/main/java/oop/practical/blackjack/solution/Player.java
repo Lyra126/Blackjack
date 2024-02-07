@@ -42,10 +42,10 @@ public class Player {
     // Get the value of the card
     public int getValue(String card) {
         String rank = getRank(card);
-        if (rank.equals("Ace")) {
+        if (rank.equals("A")) {
             // For simplicity, consider Ace as 11
             return 11;
-        } else if (rank.equals("Jack") || rank.equals("Queen") || rank.equals("King")) {
+        } else if (rank.equals("J") || rank.equals("Q") || rank.equals("K")) {
             // Face cards are worth 10 points
             return 10;
         } else {
@@ -56,6 +56,12 @@ public class Player {
 
     // Get the rank of the card
     public String getRank(String card) {
+        if (card == null || card.isEmpty()) {
+            // Handle the case where the card is null or empty
+            // Return an appropriate default value or throw an exception
+            // For example, you can return an empty string or throw an IllegalArgumentException
+            throw new IllegalArgumentException("Card cannot be null or empty");
+        }
         // Assuming the card string has the rank followed by the suit (e.g., "2S" for 2 of Spades)
         return card.substring(0, card.length() - 1); // Extract the rank part
     }
@@ -78,6 +84,19 @@ public class Player {
         }
         return total;
     }
+
+    public boolean canSplit() {
+        // Check if the player has exactly two cards in their hand and if both cards have the same rank
+        return hand.size() == 2 && getRank(hand.get(0)).equals(getRank(hand.get(1)));
+    }
+
+    public List<String> split() {
+        // Split the hand into two separate hands
+        List<String> splitHand = new ArrayList<>();
+        splitHand.add(hand.remove(1)); // Remove the second card and add it to the new hand
+        return splitHand;
+    }
+
     public String inspect() {
         StringBuilder playerString = new StringBuilder("Player: ");
         String total = String.valueOf(calculateTotal());; // Assuming you have a method to calculate the total value of the player's hand

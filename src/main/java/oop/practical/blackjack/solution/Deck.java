@@ -10,7 +10,19 @@ public class Deck {
     private List<String> cards;
 
     public Deck(){
+        // Generate a standard deck of cards
         cards = new ArrayList<>();
+        String[] suits = {"S", "H", "C", "D"};
+        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                cards.add(rank + suit);
+            }
+        }
+
+        // Shuffle the deck to create a random permutation
+        Collections.shuffle(cards);
     }
 
     public Deck(List<String> cards){

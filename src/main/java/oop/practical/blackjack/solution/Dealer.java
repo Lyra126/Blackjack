@@ -41,10 +41,10 @@ public class Dealer {
     // Get the value of the card
     public int getValue(String card) {
         String rank = getRank(card);
-        if (rank.equals("Ace")) {
+        if (rank.equals("A")) {
             // For simplicity, consider Ace as 11
             return 11;
-        } else if (rank.equals("Jack") || rank.equals("Queen") || rank.equals("King")) {
+        } else if (rank.equals("J") || rank.equals("Q") || rank.equals("K")) {
             // Face cards are worth 10 points
             return 10;
         } else {
