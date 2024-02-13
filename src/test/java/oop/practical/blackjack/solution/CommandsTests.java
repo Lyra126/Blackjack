@@ -95,6 +95,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (21): JS, AC (won)
                     Dealer (16): 10H, 6D (lost)
+                    
                     """),
                     Arguments.of("Dealer Blackjack", """
                     (deal :2S :10H :AC :AD)
@@ -102,6 +103,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (13): 2S, AC (lost)
                     Dealer (21): 10H, AD (won)
+                    
                     """),
                     Arguments.of("Empty Deck", """
                     (deal)
@@ -129,6 +131,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (18): 2S, AC, 5S (playing)
                     Dealer (? + 7): ?, 7D (waiting)
+                    
                     """),
                     Arguments.of("21", """
                     (deal :2S :10H :AC :7D :8S)
@@ -137,6 +140,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (21): 2S, AC, 8S (won)
                     Dealer (17): 10H, 7D (lost)
+                    
                     """),
                     Arguments.of("Ace Value Change", """
                     (deal :2S :10H :AC :7D :KS)
@@ -145,6 +149,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (13): 2S, AC, KS (playing)
                     Dealer (? + 7): ?, 7D (waiting)
+                    
                     """),
                     Arguments.of("Busted", """
                     (deal :2S :10H :QC :7D :KS)
@@ -153,6 +158,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (22): 2S, QC, KS (busted)
                     Dealer (17): 10H, 7D (won)
+                    
                     """)
             );
         }
@@ -177,6 +183,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (13): 2S, AC (lost)
                     Dealer (17): 10H, 7D (won)
+                    
                     """),
                     Arguments.of("Player Loss", """
                     (deal :8S :10H :AC :7D)
@@ -185,6 +192,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (19): 8S, AC (won)
                     Dealer (17): 10H, 7D (lost)
+                    
                     """)
             );
         }
@@ -253,6 +261,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (19): 2S, AC, 6S (won)
                     Dealer (17): 10H, 7D (lost)
+                    
                     """)
             );
         }

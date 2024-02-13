@@ -100,16 +100,16 @@ public class Player {
         // Implement logic to determine if the player has won
         int playerTotal = calculateTotal(hand);
         int dealerTotal = dealer.calculateTotal();
-
         //if player busted
-        if(isHandBust(hand)){
-            status = "busted";
+        if(calculateTotal(hand) == 21 || playerTotal > dealerTotal){
+            status = "won";
             dealer.updateStatus("lost");
-        }
-        else if(dealer.isBust()) {
-        //TODO what about tie?
+        } else  if(playerTotal < dealerTotal){
             status = "lost";
             dealer.updateStatus("won");
+        } else {
+            status = "playing";
+            dealer.updateStatus("waiting");
         }
     }
     public void doubleDown(Dealer dealer){
@@ -128,6 +128,39 @@ public class Player {
         }
 
     }
+
+    public void stand(Dealer dealer){
+        int playerTotal = calculateTotal(hand);
+        int dealerTotal = dealer.calculateTotal();
+
+        if(playerTotal > dealerTotal){
+            status = "won";
+            dealer.updateStatus("lost");
+        } else  if(playerTotal < dealerTotal){
+            status = "lost";
+            dealer.updateStatus("won");
+        } else {
+            status = "playing";
+            dealer.updateStatus("waiting");
+        }
+
+    }
+
+public void hit(Dealer dealer){
+    int playerTotal = calculateTotal(hand);
+    int dealerTotal = dealer.calculateTotal();
+    if(playerTotal > 21) {
+        status = "busted";
+        dealer.updateStatus("won");
+    } else if(playerTotal == 21) {
+        status = "won";
+        dealer.updateStatus("lost");
+    }else{
+        status = "playing";
+        dealer.updateStatus("waiting");
+    }
+}
+
 
 
     public String inspect() {

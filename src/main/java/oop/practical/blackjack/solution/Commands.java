@@ -107,6 +107,7 @@ public final class Commands {
         player.updateHandStatus();
         dealer.updateHandStatus();
         deck.updateStatus();
+        player.hasWon(dealer);
 
         return "Initial cards dealt";
     }
@@ -114,10 +115,14 @@ public final class Commands {
 
     public String hit() {
         player.addCard(deck.dealCard());
+        player.hit(dealer);
+        deck.updateStatus();
         return "Player hits";
     }
 
     public String stand() {
+        player.stand(dealer);
+        deck.updateStatus();
         return "Player Stands";
     }
 
@@ -143,7 +148,7 @@ public final class Commands {
             case "deck" -> deck.inspect();
             case "player" -> player.inspect();
             case "dealer" -> dealer.inspect();
-            default -> " ";
+            default -> "\n";
         };
     }
 }

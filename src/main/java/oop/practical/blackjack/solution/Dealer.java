@@ -86,7 +86,7 @@ public class Dealer {
 
         dealerString.append("(").append(total).append("): ");
 
-        if (!hand.isEmpty()) {
+        if (!hand.isEmpty() ) {
             dealerString.append(hand.get(0)).append(", "); // Append the hidden card
             dealerString.append(hand.get(1)); // Append the shown card
         }
