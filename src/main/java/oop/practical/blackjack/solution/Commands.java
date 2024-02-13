@@ -2,7 +2,6 @@ package oop.practical.blackjack.solution;
 
 import oop.practical.blackjack.lisp.Ast;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +10,7 @@ public final class Commands {
     private Deck deck;
     private final Player player;
     private final Dealer dealer;
+
     public Commands(){
         deck = new Deck();
         player = new Player();
@@ -23,9 +23,9 @@ public final class Commands {
         switch (function.name()) {
             case "do" -> {
                 return function.arguments().stream()
-                    .map(this::execute)
-                    .filter(r -> !r.isEmpty())
-                    .collect(Collectors.joining("\n"));
+                        .map(this::execute)
+                        .filter(r -> !r.isEmpty())
+                        .collect(Collectors.joining("\n"));
             }
             case "deck" -> {
                 assert function.arguments().stream().allMatch(a -> a instanceof Ast.Atom);
@@ -62,69 +62,82 @@ public final class Commands {
         }
     }
 
-    // initializes the deck with the given list of cards or creates a new deck with a standard set of cards if the list is empty
     public String deck(List<String> cards) {
-        if(cards.isEmpty()){
-            deck = new Deck();
+        if (cards.isEmpty()) {
+            deck = new Deck(); // Initialize an empty deck
+            // Add a standard deck of cards to the deck
+            for (Card.Suite suite : Card.Suite.values()) {
+                for (Card.Rank rank : Card.Rank.values()) {
+                    deck.addCard(new Card(rank, suite).toString());
+                }
+            }
         } else {
-            deck = new Deck(cards);
+            // Convert strings to Card objects and add them to the deck
+            deck.setDeck(cards);
         }
+        // Update the status of the deck
+        deck.updateStatus();
         return "Deck Initialized";
     }
 
-    //starts the game by dealing initial cards to the player(s) and the dealer, if cards are empty, should use the current deck to deal cards
+
+
     public String deal(List<String> cards) {
-            if (cards.isEmpty())
-                return "Error: Deck is empty";
-
-            // Clear hands before dealing new cards
-            player.clearHand();
-            dealer.clearHand();
-
-        for (int i = 0; i < cards.size(); i++) {
-            if (i % 2 == 0)
-                player.addCard(cards.get(i));
-            else
-                dealer.addCard(cards.get(i));
+        if (cards.isEmpty()) {
+            return "Error: Deck is empty";
         }
 
+        // Clear hands before dealing new cards
+        player.clearHands();
+        dealer.clearHand();
+
+        // Deal cards alternatively to player and dealer
+        for (int i = 0; i < 4; i++) {
+            if (i % 2 == 0) {
+                player.addCard(Card.parse(cards.get(i)));
+            } else {
+                dealer.addCard(Card.parse(cards.get(i)));
+            }
+        }
+        for(int i = 4 ; i < cards.size(); i++){
+            deck.addCard(cards.get(i));
+        }
 
         // Update hand status
-            player.updateHandStatus();
-            dealer.updateHandStatus();
+        player.updateHandStatus();
+        dealer.updateHandStatus();
+        deck.updateStatus();
 
-            return "Initial cards dealt";
+        return "Initial cards dealt";
     }
 
 
-    // method allows the player to take an additional card from the deck, need to deal a card from the deck to the player's hand.
     public String hit() {
         player.addCard(deck.dealCard());
         return "Player hits";
     }
 
-    // signifies that the player doesn't want any more cards
     public String stand() {
         return "Player Stands";
     }
 
-    //allows the player to split their hand if the initial two cards have the same value
     public String split() {
-        //split the hand into two separate hands and deal an additional card to each hand
+        /*
         if(!player.canSplit()){
             return "Error: Hand cannot be split";
         }
-        player.addCards(player.split());
+        player.split();*/
         return "Hand split";
     }
 
-    // allows the player to double their bet and receive one additional card
     public String doubleDown() {
-        //deal one more card to the player's hand and possibly adjust their bet
-        return "Player doubles down";
+        player.addCard(deck.dealCard());
+        player.updateHandStatus();
+        player.doubleDown(dealer);
+        deck.updateStatus();
+        return "Player doubles down, comparing hands";
     }
 
-    //returns the state of a specific part of the game, such as the deck, player's hand, or dealer's hand
     public String inspect(String name) {
         return switch (name) {
             case "deck" -> deck.inspect();

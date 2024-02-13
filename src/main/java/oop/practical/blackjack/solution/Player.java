@@ -4,81 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private List<String> hand;
-    private boolean isBust;
+    private List<Card> hand; // List to store player's hands
+    private boolean isBust; // Flag to indicate if the player is bust
     private String status;
-    private static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
 
-    public Player(){
+    public Player() {
         hand = new ArrayList<>();
+        isBust = false;
     }
 
-    public void addCard(String hand){
-        this.hand.add(hand);
+    public void addCard(Card card) {
+        hand.add(card); // Add the card to the first hand
+        updateBustStatus();
     }
 
-    public void addCards(List<String> hand){
-        this.hand.addAll(hand);
+    public void addCards(List<Card> cards) {
+        for (Card c : cards)
+            addCard(c); // Add the cards to the first hand
+        updateBustStatus();
     }
 
-
-    public List<String> getHand(){
-        return hand;
+    public void clearHands() {
+        hand.clear();
+        isBust = false; // Reset bust status when clearing hands
     }
 
-    public void clearHand(){
-        this.hand.clear();
+    private void updateBustStatus() {
+        isBust = isHandBust(hand); // Determine bust status based on the single hand
     }
 
-    public void updateHandStatus() {
-        int totalValue = calculateTotal();
-        if (totalValue > 21) {
-            isBust = true;
-        } else {
-            isBust = false;
-        }
-        if (isBust) {
-            status = "busted";
-        } else {
-            status = "playing";
-        }
-    }
-
-    // Get the value of the card
-    public int getValue(String card) {
-        String rank = getRank(card);
-        if (rank.equals("A")) {
-            // For simplicity, consider Ace as 11
-            return 11;
-        } else if (rank.equals("J") || rank.equals("Q") || rank.equals("K")) {
-            // Face cards are worth 10 points
-            return 10;
-        } else {
-            // Numeric cards are worth their face value
-            return Integer.parseInt(rank);
-        }
-    }
-
-    // Get the rank of the card
-    public String getRank(String card) {
-        if (card == null || card.isEmpty()) {
-            // Handle the case where the card is null or empty
-            // Return an appropriate default value or throw an exception
-            // For example, you can return an empty string or throw an IllegalArgumentException
-            throw new IllegalArgumentException("Card cannot be null or empty");
-        }
-        // Assuming the card string has the rank followed by the suit (e.g., "2S" for 2 of Spades)
-        return card.substring(0, card.length() - 1); // Extract the rank part
+    private boolean isHandBust(List<Card> hand) {
+        int totalValue = calculateTotal(hand);
+        return totalValue > 21;
     }
 
 
-    //calculate total value of hand
-    public int calculateTotal(){
+    private int calculateTotal(List<Card> hand) {
         int total = 0;
         int numberOfAces = 0;
-        for (String card : hand) {
-            total += getValue(card);
-            if (getRank(card).equals("Ace")) {
+        for (Card card : hand) {
+            total += card.getValue();
+            if (card.getRank() == Card.Rank.ACE) {
                 numberOfAces++;
             }
         }
@@ -89,37 +55,102 @@ public class Player {
         }
         return total;
     }
+/*
+    public String split() {
+        // Check if the player can split their hand
+        if (!canSplit()) {
+            return "Error: Hand cannot be split";
+        }
 
+        // Create a new hand for splitting
+        List<Card> newHand = new ArrayList<>();
+        newHand.add(hands.get(0).remove(1)); // Remove the second card from the original hand and add it to the new hand
+
+        // Add the new hand to the player's hands
+        hands.add(newHand);
+
+        return "Hand split";
+    }*/
+
+    public void updateHandStatus() {
+        // Update bust status for each hand
+        if (isHandBust(hand)) {
+            isBust = true;
+            return; // No need to continue checking other hands if one hand is bust
+        }
+        // If none of the hands are bust, set isBust to false
+        isBust = false;
+    }
+
+    /*
     public boolean canSplit() {
-        // Check if the player has exactly two cards in their hand and if both cards have the same rank
-        return hand.size() == 2 && getRank(hand.get(0)).equals(getRank(hand.get(1)));
+        // Check if the player has exactly two cards in their hand
+        if (hands.get(0).size() != 2) {
+            return false;
+        }
+
+        // Check if both cards have the same rank
+        Card firstCard = hands.get(0).get(0);
+        Card secondCard = hands.get(0).get(1);
+        return firstCard.getRank() == secondCard.getRank();
+    }
+*/
+
+    public void hasWon(Dealer dealer) {
+        // Implement logic to determine if the player has won
+        int playerTotal = calculateTotal(hand);
+        int dealerTotal = dealer.calculateTotal();
+
+        //if player busted
+        if(isHandBust(hand)){
+            status = "busted";
+            dealer.updateStatus("lost");
+        }
+        else if(dealer.isBust()) {
+        //TODO what about tie?
+            status = "lost";
+            dealer.updateStatus("won");
+        }
+    }
+    public void doubleDown(Dealer dealer){
+        int playerTotal = calculateTotal(hand);
+        int dealerTotal = dealer.calculateTotal();
+
+        if(playerTotal > dealerTotal){
+            status = "won";
+            dealer.updateStatus("lost");
+        } else  if(playerTotal < dealerTotal){
+            status = "lost";
+            dealer.updateStatus("won");
+        } else {
+            status = "playing";
+            dealer.updateStatus("waiting");
+        }
+
     }
 
-    public List<String> split() {
-        // Split the hand into two separate hands
-        List<String> splitHand = new ArrayList<>();
-        splitHand.add(hand.remove(1)); // Remove the second card and add it to the new hand
-        return splitHand;
-    }
 
     public String inspect() {
-        StringBuilder playerString = new StringBuilder("    Player: ");
-        String total = String.valueOf(calculateTotal());; // Assuming you have a method to calculate the total value of the player's hand
+        StringBuilder playerString = new StringBuilder();
+        playerString.append("Player ");
+
+        int total = calculateTotal(hand);
 
         playerString.append("(").append(total).append("): ");
 
-        for (String card : hand) {
-            playerString.append(card).append(", ");
+        for (Card card : hand) {
+            playerString.append(card.toString()).append(", ");
         }
 
         // Remove the trailing comma and space
-        if (playerString.length() > "    Player: ".length()) {
+        if (!playerString.isEmpty()) {
             playerString.delete(playerString.length() - 2, playerString.length());
         }
 
-        playerString.append(" (").append(status).append(")"); // Assuming you have a variable to store the player's status
+        // Append bust status
+
+        playerString.append(" (").append(status).append(")");
 
         return playerString.toString();
     }
 }
-

@@ -4,69 +4,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
-    private List<String> hand;
+    private List<Card> hand;
     private boolean isBust;
-    private static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+    private String status;
 
-    public Dealer(){
+    public Dealer() {
         hand = new ArrayList<>();
     }
 
-    public void addCard(String hand){
-        this.hand.add(hand);
+    public void addCard(Card card) {
+        hand.add(card);
     }
 
-    public void addCards(List<String> hand){
-        this.hand.addAll(hand);
+    public void addCards(List<Card> cards) {
+        hand.addAll(cards);
     }
 
-
-    public List<String> getHand(){
+    public List<Card> getHand() {
         return hand;
     }
 
-    public void clearHand(){
-        this.hand.clear();
+    public void clearHand() {
+        hand.clear();
     }
 
     public void updateHandStatus() {
         int totalValue = calculateTotal();
-        if (totalValue > 21) {
-            isBust = true;
-        } else {
-            isBust = false;
-        }
+        isBust = totalValue > 21;
     }
 
     // Get the value of the card
-    public int getValue(String card) {
-        String rank = getRank(card);
-        if (rank.equals("A")) {
+    public int getValue(Card card) {
+        Card.Rank rank = card.getRank();
+        if (rank == Card.Rank.ACE) {
             // For simplicity, consider Ace as 11
             return 11;
-        } else if (rank.equals("J") || rank.equals("Q") || rank.equals("K")) {
+        } else if (rank == Card.Rank.JACK || rank == Card.Rank.QUEEN || rank == Card.Rank.KING) {
             // Face cards are worth 10 points
             return 10;
         } else {
             // Numeric cards are worth their face value
-            return Integer.parseInt(rank);
+            return rank.ordinal() + 1;
         }
     }
 
-    // Get the rank of the card
-    public String getRank(String card) {
-        // Assuming the card string has the rank followed by the suit (e.g., "2S" for 2 of Spades)
-        return card.substring(0, card.length() - 1); // Extract the rank part
-    }
-
-
-    //calculate total value of hand
-    public int calculateTotal(){
+    // Calculate total value of hand
+    public int calculateTotal() {
         int total = 0;
         int numberOfAces = 0;
-        for (String card : hand) {
+        for (Card card : hand) {
             total += getValue(card);
-            if (getRank(card).equals("Ace")) {
+            if (card.getRank() == Card.Rank.ACE) {
                 numberOfAces++;
             }
         }
@@ -78,25 +66,34 @@ public class Dealer {
         return total;
     }
 
+    public boolean isBust() {
+        return calculateTotal() > 21;
+    }
+
+    public void updateStatus(String status){
+        this.status = status;
+    }
+
     public String inspect() {
+        StringBuilder dealerString = new StringBuilder("Dealer ");
+        String shownCard = "?"; // Default to unknown card
+        int total = 0;
 
-
-        StringBuilder dealerString = new StringBuilder("    Dealer: ");
-        String shownCard = hand.isEmpty() ? "?" : String.valueOf(getValue(hand.get(1))); // Get the value of the second card (first visible card)
-        int total = calculateTotal(); // Assuming you have a method to calculate the total value of the dealer's hand
-
-        dealerString.append("(? + ").append(shownCard).append("): ");
-
-        if (hand.isEmpty()) {
-            dealerString.append("?");
-        } else {
-            dealerString.append("?, ").append(hand.get(1)); // Append the shown card value
+        if (!hand.isEmpty()) {
+            total = calculateTotal();
+            shownCard = String.valueOf(getValue(hand.get(1))); // Get the value of the second card (first visible card)
         }
 
-        dealerString.append(" (waiting)");
+        dealerString.append("(").append(total).append("): ");
+
+        if (!hand.isEmpty()) {
+            dealerString.append(hand.get(0)).append(", "); // Append the hidden card
+            dealerString.append(hand.get(1)); // Append the shown card
+        }
+
+        dealerString.append(" (").append(status).append(")");
 
         return dealerString.toString();
-
     }
 
 }
