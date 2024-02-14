@@ -85,7 +85,7 @@ public class Dealer {
         String shownCard = "?"; // Default to unknown card
         int total = calculateTotal();
 
-        if (!hand.isEmpty() && (status == "waiting" || status == "waiting, waiting"|| status == "waiting, lost") ){
+        if (!hand.isEmpty() && (status.equals("waiting")  || status.equals("waiting, waiting") || status.equals("waiting, lost")) ){
             dealerString.append("(").append("? + ").append(hand.get(1).getValue()).append("): ");
             dealerString.append("?").append(", "); // Append the hidden card
             dealerString.append(hand.get(1)); // Append the shown card

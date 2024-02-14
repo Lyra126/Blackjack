@@ -43,7 +43,7 @@ public class Deck {
         if (cards.isEmpty()) {
             return null; // No cards left in the deck
         }
-        return cards.remove(0); // Remove and return the top card from the deck
+        return cards.removeFirst(); // Remove and return the top card from the deck
     }
 
     public void updateStatus(){

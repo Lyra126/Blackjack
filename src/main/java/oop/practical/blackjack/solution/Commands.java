@@ -89,17 +89,16 @@ public final class Commands {
         dealer.clearHand();
         if (cards.isEmpty() && !deck.isEmpty()) {
             for (int i = 0; i < deck.getSize(); i++) {
-                System.out.println("before" + deck.getSize());
-                if (i % 2 == 0 || dealer.totalCards() == 2) {
-                    System.out.println( deck.getSize());
-                    player.addCard(deck.dealCard());
-                } else {
-                    System.out.println( deck.getSize());
-                    dealer.addCard(deck.dealCard());
+                Card card = deck.dealCard();
+                if(card != null ) {
+                    if (i % 2 == 0 || dealer.totalCards() == 2) {
+                        player.addCard(card);
+                    } else {
+                        dealer.addCard(card);
+                    }
+                    System.out.println(player.inspect());
+                    System.out.println(dealer.inspect());
                 }
-                System.out.println(player.inspect());
-                System.out.println(dealer.inspect());
-                System.out.println("after" + deck.getSize());
             }
         } else if (!cards.isEmpty()) {
             // Deal cards from the provided list
