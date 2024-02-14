@@ -11,74 +11,53 @@ public class Dealer {
     public Dealer() {
         hand = new ArrayList<>();
     }
-
+    public List<Card> getHand() { return hand; }
     public void addCard(Card card) {
         hand.add(card);
     }
-
     public void addCards(List<Card> cards) {
         hand.addAll(cards);
     }
-
-    public List<Card> getHand() {
-        return hand;
-    }
-
     public void clearHand() {
         hand.clear();
     }
-
-    public int totalCards(){
-        return hand.size();
-    }
+    public int totalCards() { return hand.size(); }
+    public boolean isBust() { return calculateTotal() > 21; }
+    public void updateStatus(String status) {this.status = status; }
 
     public void updateHandStatus() {
         int totalValue = calculateTotal();
         isBust = totalValue > 21;
     }
 
-    // Get the value of the card
     public int getValue(Card card) {
-        Card.Rank rank = card.getRank();
-        if (rank == Card.Rank.ACE) {
-            // For simplicity, consider Ace as 11
+        Card.Rank rank = card.rank();
+        if (rank == Card.Rank.ACE)
             return 11;
-        } else if (rank == Card.Rank.JACK || rank == Card.Rank.QUEEN || rank == Card.Rank.KING) {
-            // Face cards are worth 10 points
+        else if (rank == Card.Rank.JACK || rank == Card.Rank.QUEEN || rank == Card.Rank.KING)
             return 10;
-        } else {
-            // Numeric cards are worth their face value
+        else
             return rank.ordinal() + 1;
-        }
     }
 
-    // Calculate total value of hand
     public int calculateTotal() {
         int total = 0;
         int numberOfAces = 0;
         for (Card card : hand) {
             if(card != null){
                 total += getValue(card);
-                if (card.getRank() == Card.Rank.ACE) {
+                if (card.rank() == Card.Rank.ACE)
                     numberOfAces++;
-                }
             }
         }
-        // Adjust the value of Aces if needed
+
         while (total > 21 && numberOfAces > 0) {
-            total -= 10; // Treat Ace as 1 instead of 11
+            total -= 10;
             numberOfAces--;
         }
         return total;
     }
 
-    public boolean isBust() {
-        return calculateTotal() > 21;
-    }
-
-    public void updateStatus(String status){
-        this.status = status;
-    }
 
     public String inspect() {
         StringBuilder dealerString = new StringBuilder("Dealer ");
@@ -87,14 +66,13 @@ public class Dealer {
 
         if (!hand.isEmpty() && (status.equals("waiting")  || status.equals("waiting, waiting") || status.equals("waiting, lost")) ){
             dealerString.append("(").append("? + ").append(hand.get(1).getValue()).append("): ");
-            dealerString.append("?").append(", "); // Append the hidden card
-            dealerString.append(hand.get(1)); // Append the shown card
+            dealerString.append("?").append(", "); //append hidden card
+            dealerString.append(hand.get(1));
         } else if (!hand.isEmpty()) {
-            shownCard = String.valueOf(getValue(hand.get(1))); // Get the value of the second card (first visible card)
+            shownCard = String.valueOf(getValue(hand.get(1)));
             dealerString.append("(").append(total).append("): ");
-            dealerString.append(hand.get(0)).append(", "); // Append the hidden card
+            dealerString.append(hand.get(0)).append(", ");
             dealerString.append(hand.get(1)); // Append the shown card
-
         }
         dealerString.append(" (").append(status).append(")");
         return dealerString.toString();

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class Commands {
-
     private Deck deck;
     private final Player player;
     private final Player player2;
@@ -15,6 +14,7 @@ public final class Commands {
     public Commands(){
         deck = new Deck();
         player = new Player();
+        //only used when split is called
         player2 = new Player();
         dealer = new Dealer();
     }
@@ -66,74 +66,53 @@ public final class Commands {
 
     public String deck(List<String> cards) {
         if (cards.isEmpty()) {
-            deck = new Deck(); // Initialize an empty deck
+            deck = new Deck();
             // Add a standard deck of cards to the deck
-            for (Card.Suite suite : Card.Suite.values()) {
-                for (Card.Rank rank : Card.Rank.values()) {
+            for (Card.Suite suite : Card.Suite.values())
+                for (Card.Rank rank : Card.Rank.values())
                     deck.addCard(new Card(rank, suite).toString());
-                }
-            }
-        } else {
-            // Convert strings to Card objects and add them to the deck
+        } else
             deck.setDeck(cards);
-        }
-        // Update the status of the deck
         deck.updateStatus();
         return "Deck Initialized";
     }
 
-
-
     public String deal(List<String> cards) {
         player.clearHands();
         dealer.clearHand();
+
+        //if there has been no list of cards provided and the deck has cards, deal them
         if (cards.isEmpty() && !deck.isEmpty()) {
-            for (int i = 0; i < deck.getSize(); i++) {
+            int deckSize = deck.getSize();
+            for (int i = 0; i < deckSize; i++) {
                 Card card = deck.dealCard();
                 if(card != null ) {
-                    if (i % 2 == 0 || dealer.totalCards() == 2) {
+                    if (i % 2 == 0 || dealer.totalCards() == 2)
                         player.addCard(card);
-                    } else {
+                    else
                         dealer.addCard(card);
-                    }
-                    System.out.println(player.inspect());
-                    System.out.println(dealer.inspect());
                 }
             }
-        } else if (!cards.isEmpty()) {
-            // Deal cards from the provided list
+        } else if (!cards.isEmpty()) { // Deal cards from the provided list
             for (int i = 0; i < cards.size(); i++) {
-                if ((i % 2 == 0 ) || dealer.totalCards() >= 2){
-                    Card playerCard = Card.parse(cards.get(i));
-                    if (playerCard != null) {
-                        player.addCard(playerCard);
-                    } else {
-                        // Handle the case where parsing fails
-                        return "Error: Invalid card format";
-                    }
-                } else {
-                    Card dealerCard = Card.parse(cards.get(i));
-                    if (dealerCard != null) {
-                        dealer.addCard(dealerCard);
-                    } else {
-                        // Handle the case where parsing fails
-                        return "Error: Invalid card format";
-                    }
-                }
+                Card card = Card.parse(cards.get(i));
+                if(card!=null) {
+                    if ((i % 2 == 0) || dealer.totalCards() >= 2)
+                        player.addCard(card);
+                    else
+                        dealer.addCard(card);
+                } else
+                    return "Error: Invalid card format";
             }
-        } else {
+        } else
             return "Error: Deck is empty";
-        }
 
-        // Update hand status
+        // Update statuses
         player.updateHandStatus();
         dealer.updateHandStatus();
         player.hasWon(dealer);
-
         return "Initial cards dealt";
     }
-
-
 
     public String hit() {
         if(!deck.isEmpty()) {

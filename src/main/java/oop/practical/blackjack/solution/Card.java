@@ -1,6 +1,6 @@
 package oop.practical.blackjack.solution;
 
-public class Card {
+public record Card(oop.practical.blackjack.solution.Card.Rank rank, oop.practical.blackjack.solution.Card.Suite suite) {
 
     public enum Rank {
         ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING;
@@ -10,20 +10,16 @@ public class Card {
         HEARTS, DIAMONDS, CLUBS, SPADES;
     }
 
-    private final Rank rank;
-    private final Suite suite;
-
-    public Card(Rank rank, Suite suite) {
-        this.rank = rank;
-        this.suite = suite;
+    @Override
+    public String toString() {
+        return getRankString() + getSuiteString();
     }
 
     public static Card parse(String input) {
         Rank rank;
         Suite suite;
 
-        //if rank is 10
-        if(input.charAt(0) ==  '1') {
+        if (input.charAt(0) == '1') {
             if (input.length() < 3 || (input.charAt(1) != '0')) {
                 throw new IllegalArgumentException("Invalid rank: " + input);
             }
@@ -66,78 +62,42 @@ public class Card {
     }
 
 
-    public Rank getRank() {
-        return rank;
-    }
-
-    public Suite getSuite() {
-        return suite;
-    }
-
     public int getValue() {
-        switch (rank) {
-            case ACE:
-                return 11; // Returning 11 for now, as it can be 1 or 11 depending on the player's hand
-            case TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN:
-                return rank.ordinal() + 1; // Ordinal value for numeric cards is their face value
-            case JACK, QUEEN, KING:
-                return 10; // Face cards have a value of 10
-            default:
-                return 0; // This should not happen if the input is valid
-        }
+        return switch (rank) {
+            case ACE -> 11;
+            case TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN -> rank.ordinal() + 1;
+            case JACK, QUEEN, KING -> 10;
+            default -> 0;
+        };
     }
 
-    @Override
-    public String toString() {
-        return getRankString() + getSuiteString();
-    }
 
     private String getRankString() {
-        switch (rank) {
-            case ACE:
-                return "A";
-            case TWO:
-                return "2";
-            case THREE:
-                return "3";
-            case FOUR:
-                return "4";
-            case FIVE:
-                return "5";
-            case SIX:
-                return "6";
-            case SEVEN:
-                return "7";
-            case EIGHT:
-                return "8";
-            case NINE:
-                return "9";
-            case TEN:
-                return "10";
-            case JACK:
-                return "J";
-            case QUEEN:
-                return "Q";
-            case KING:
-                return "K";
-            default:
-                throw new IllegalStateException("Unexpected value: " + rank);
-        }
+        return switch (rank) {
+            case ACE -> "A";
+            case TWO -> "2";
+            case THREE -> "3";
+            case FOUR -> "4";
+            case FIVE -> "5";
+            case SIX -> "6";
+            case SEVEN -> "7";
+            case EIGHT -> "8";
+            case NINE -> "9";
+            case TEN -> "10";
+            case JACK -> "J";
+            case QUEEN -> "Q";
+            case KING -> "K";
+            default -> throw new IllegalStateException("Unexpected value: " + rank);
+        };
     }
 
     private String getSuiteString() {
-        switch (suite) {
-            case HEARTS:
-                return "H";
-            case DIAMONDS:
-                return "D";
-            case CLUBS:
-                return "C";
-            case SPADES:
-                return "S";
-            default:
-                throw new IllegalStateException("Unexpected value: " + suite);
-        }
+        return switch (suite) {
+            case HEARTS -> "H";
+            case DIAMONDS -> "D";
+            case CLUBS -> "C";
+            case SPADES -> "S";
+            default -> throw new IllegalStateException("Unexpected value: " + suite);
+        };
     }
-
 }
