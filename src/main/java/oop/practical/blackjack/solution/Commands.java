@@ -9,11 +9,13 @@ public final class Commands {
 
     private Deck deck;
     private final Player player;
+    private final Player player2;
     private final Dealer dealer;
 
     public Commands(){
         deck = new Deck();
         player = new Player();
+        player2 = new Player();
         dealer = new Dealer();
     }
 
@@ -86,83 +88,108 @@ public final class Commands {
         player.clearHands();
         dealer.clearHand();
         if (cards.isEmpty() && !deck.isEmpty()) {
-            // Deal cards alternatively to player and dealer
-            for (int i = 0; i < 4; i++) {
-                if (i % 2 == 0) {
+            for (int i = 0; i < deck.getSize(); i++) {
+                System.out.println("before" + deck.getSize());
+                if (i % 2 == 0 || dealer.totalCards() == 2) {
+                    System.out.println( deck.getSize());
                     player.addCard(deck.dealCard());
                 } else {
+                    System.out.println( deck.getSize());
                     dealer.addCard(deck.dealCard());
                 }
+                System.out.println(player.inspect());
+                System.out.println(dealer.inspect());
+                System.out.println("after" + deck.getSize());
             }
-
-            // Update hand status
-            player.updateHandStatus();
-            dealer.updateHandStatus();
-            deck.updateStatus();
-            player.hasWon(dealer);
-
-            return "Initial cards dealt";
-        } else if (cards.isEmpty() ) {
+        } else if (!cards.isEmpty()) {
+            // Deal cards from the provided list
+            for (int i = 0; i < cards.size(); i++) {
+                if ((i % 2 == 0 ) || dealer.totalCards() >= 2){
+                    Card playerCard = Card.parse(cards.get(i));
+                    if (playerCard != null) {
+                        player.addCard(playerCard);
+                    } else {
+                        // Handle the case where parsing fails
+                        return "Error: Invalid card format";
+                    }
+                } else {
+                    Card dealerCard = Card.parse(cards.get(i));
+                    if (dealerCard != null) {
+                        dealer.addCard(dealerCard);
+                    } else {
+                        // Handle the case where parsing fails
+                        return "Error: Invalid card format";
+                    }
+                }
+            }
+        } else {
             return "Error: Deck is empty";
-        }
-
-        // Deal cards alternatively to player and dealer
-        for (int i = 0; i < 4; i++) {
-            if (i % 2 == 0) {
-                player.addCard(Card.parse(cards.get(i)));
-            } else {
-                dealer.addCard(Card.parse(cards.get(i)));
-            }
-        }
-        for(int i = 4 ; i < cards.size(); i++){
-            deck.addCard(cards.get(i));
         }
 
         // Update hand status
         player.updateHandStatus();
         dealer.updateHandStatus();
-        deck.updateStatus();
         player.hasWon(dealer);
 
         return "Initial cards dealt";
     }
 
 
+
     public String hit() {
-        player.addCard(deck.dealCard());
-        player.hit(dealer);
-        deck.updateStatus();
+        if(!deck.isEmpty()) {
+            player.addCard(deck.dealCard());
+            player.hit(dealer);
+            deck.updateStatus();
+        }
         return "Player hits";
     }
 
     public String stand() {
-        player.stand(dealer);
+        if(player2.hasCards())
+            player.stand(dealer, player2);
+        else
+            player.stand(dealer);
         deck.updateStatus();
         return "Player Stands";
     }
 
     public String split() {
-        if(!player.canSplit()){
-            return "Error: Hand cannot be split";
+        player2.clearHands();
+        if(player.hasCards()) {
+            player.split(player2);
+            player.updateHandStatus();
+            player2.updateHandStatus();
+            player.splitWin(dealer, player2);
         }
-        player.split();
         return "Hand split";
     }
 
     public String doubleDown() {
-        player.addCard(deck.dealCard());
-        player.updateHandStatus();
-        player.doubleDown(dealer);
-        deck.updateStatus();
+        if(!deck.isEmpty() || player.hasCards()) {
+            if(!deck.isEmpty())
+                player.addCard(deck.dealCard());
+            player.updateHandStatus();
+            player.doubleDown(dealer);
+            deck.updateStatus();
+        }
         return "Player doubles down, comparing hands";
     }
 
     public String inspect(String name) {
         return switch (name) {
-            case "deck" -> deck.inspect();
-            case "player" -> player.inspect();
-            case "dealer" -> dealer.inspect();
-            default -> "\n";
+            case "deck":
+                yield deck.inspect();
+            case "player":
+                StringBuilder players = new StringBuilder();
+                players.append(player.inspect());
+                if(player2.hasCards())
+                    players.append("\n").append(player2.inspect());
+                yield players.toString();
+            case "dealer":
+                yield dealer.inspect();
+            default:
+                yield "\n";
         };
     }
 }

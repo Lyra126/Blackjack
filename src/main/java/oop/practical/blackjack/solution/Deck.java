@@ -27,6 +27,10 @@ public class Deck {
         updateStatus();
     }
 
+    public int getSize(){
+        return cards.size();
+    }
+
     private void initializeDeck() {
         for (Card.Suite suite : Card.Suite.values()) {
             for (Card.Rank rank : Card.Rank.values()) {
@@ -45,8 +49,6 @@ public class Deck {
     public void updateStatus(){
         if (cards.isEmpty()) {
             status = "(empty)";
-        } else {
-            status = inspect(); // Or any other format you prefer
         }
     }
 

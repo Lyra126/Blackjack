@@ -28,6 +28,10 @@ public class Dealer {
         hand.clear();
     }
 
+    public int totalCards(){
+        return hand.size();
+    }
+
     public void updateHandStatus() {
         int totalValue = calculateTotal();
         isBust = totalValue > 21;
@@ -53,9 +57,11 @@ public class Dealer {
         int total = 0;
         int numberOfAces = 0;
         for (Card card : hand) {
-            total += getValue(card);
-            if (card.getRank() == Card.Rank.ACE) {
-                numberOfAces++;
+            if(card != null){
+                total += getValue(card);
+                if (card.getRank() == Card.Rank.ACE) {
+                    numberOfAces++;
+                }
             }
         }
         // Adjust the value of Aces if needed
@@ -79,7 +85,7 @@ public class Dealer {
         String shownCard = "?"; // Default to unknown card
         int total = calculateTotal();
 
-        if (!hand.isEmpty() && status == "waiting") {
+        if (!hand.isEmpty() && (status == "waiting" || status == "waiting, waiting"|| status == "waiting, lost") ){
             dealerString.append("(").append("? + ").append(hand.get(1).getValue()).append("): ");
             dealerString.append("?").append(", "); // Append the hidden card
             dealerString.append(hand.get(1)); // Append the shown card
