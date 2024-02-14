@@ -55,7 +55,28 @@ public class Player {
         }
         return total;
     }
-/*
+
+    public void updateHandStatus() {
+        // Update bust status for each hand
+        if (isHandBust(hand)) {
+            isBust = true;
+            return; // No need to continue checking other hands if one hand is bust
+        }
+        // If none of the hands are bust, set isBust to false
+        isBust = false;
+    }
+
+    public boolean canSplit() {
+        // Check if the player has exactly two cards in their hand and if both cards have the same rank
+        if (hands.get(0).size() != 2) {
+            return false;
+        }
+
+        Card firstCard = hands.get(0).get(0);
+        Card secondCard = hands.get(0).get(1);
+        return firstCard.getRank() == secondCard.getRank();
+    }
+
     public String split() {
         // Check if the player can split their hand
         if (!canSplit()) {
@@ -70,31 +91,8 @@ public class Player {
         hands.add(newHand);
 
         return "Hand split";
-    }*/
-
-    public void updateHandStatus() {
-        // Update bust status for each hand
-        if (isHandBust(hand)) {
-            isBust = true;
-            return; // No need to continue checking other hands if one hand is bust
-        }
-        // If none of the hands are bust, set isBust to false
-        isBust = false;
     }
 
-    /*
-    public boolean canSplit() {
-        // Check if the player has exactly two cards in their hand
-        if (hands.get(0).size() != 2) {
-            return false;
-        }
-
-        // Check if both cards have the same rank
-        Card firstCard = hands.get(0).get(0);
-        Card secondCard = hands.get(0).get(1);
-        return firstCard.getRank() == secondCard.getRank();
-    }
-*/
 
     public void hasWon(Dealer dealer) {
         // Implement logic to determine if the player has won

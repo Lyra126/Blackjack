@@ -142,11 +142,10 @@ public final class Commands {
     }
 
     public String split() {
-        /*
         if(!player.canSplit()){
             return "Error: Hand cannot be split";
         }
-        player.split();*/
+        player.split();
         return "Hand split";
     }
 
