@@ -83,13 +83,28 @@ public final class Commands {
 
 
     public String deal(List<String> cards) {
-        if (cards.isEmpty()) {
-            return "Error: Deck is empty";
-        }
-
-        // Clear hands before dealing new cards
         player.clearHands();
         dealer.clearHand();
+        if (cards.isEmpty() && !deck.isEmpty()) {
+            // Deal cards alternatively to player and dealer
+            for (int i = 0; i < 4; i++) {
+                if (i % 2 == 0) {
+                    player.addCard(deck.dealCard());
+                } else {
+                    dealer.addCard(deck.dealCard());
+                }
+            }
+
+            // Update hand status
+            player.updateHandStatus();
+            dealer.updateHandStatus();
+            deck.updateStatus();
+            player.hasWon(dealer);
+
+            return "Initial cards dealt";
+        } else if (cards.isEmpty() ) {
+            return "Error: Deck is empty";
+        }
 
         // Deal cards alternatively to player and dealer
         for (int i = 0; i < 4; i++) {

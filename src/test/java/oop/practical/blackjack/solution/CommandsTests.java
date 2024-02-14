@@ -67,6 +67,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (13): 2S, AC (playing)
                     Dealer (? + 7): ?, 7D (waiting)
+                    
                     """),
                     Arguments.of("Custom Deck", """
                     (deal :2S :10H :AC :7D)
@@ -74,6 +75,7 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (13): 2S, AC (playing)
                     Dealer (? + 7): ?, 7D (waiting)
+                    
                     """),
                     Arguments.of("Empty Deck", """
                     (deal)
@@ -218,6 +220,7 @@ public final class CommandsTests {
                     Player (16): 10S, 6S (playing)
                     Player (20): 10C, QC (waiting)
                     Dealer (? + 7): ?, 7D (waiting, waiting)
+                    
                     """),
                     Arguments.of("Blackjack", """
                     (deal :10S :10H :10C :7D :6S :AC)
@@ -227,6 +230,7 @@ public final class CommandsTests {
                     Player (16): 10S, 6S (playing)
                     Player (21): 10C, AC (won)
                     Dealer (? + 7): ?, 7D (waiting, lost)
+                    
                     """),
                     Arguments.of("First Hand Resolved", """
                     (deal :10S :10H :10C :7D :6S :QC)
@@ -237,6 +241,7 @@ public final class CommandsTests {
                     Player (16): 10S, 6S (resolved)
                     Player (20): 10C, QC (playing)
                     Dealer (? + 7): ?, 7D (waiting, waiting)
+                    
                     """)
             );
         }

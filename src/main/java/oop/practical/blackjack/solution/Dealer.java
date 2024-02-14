@@ -77,23 +77,20 @@ public class Dealer {
     public String inspect() {
         StringBuilder dealerString = new StringBuilder("Dealer ");
         String shownCard = "?"; // Default to unknown card
-        int total = 0;
+        int total = calculateTotal();
 
-        if (!hand.isEmpty()) {
-            total = calculateTotal();
+        if (!hand.isEmpty() && status == "waiting") {
+            dealerString.append("(").append("? + ").append(hand.get(1).getValue()).append("): ");
+            dealerString.append("?").append(", "); // Append the hidden card
+            dealerString.append(hand.get(1)); // Append the shown card
+        } else if (!hand.isEmpty()) {
             shownCard = String.valueOf(getValue(hand.get(1))); // Get the value of the second card (first visible card)
-        }
-
-        dealerString.append("(").append(total).append("): ");
-
-        if (!hand.isEmpty() ) {
+            dealerString.append("(").append(total).append("): ");
             dealerString.append(hand.get(0)).append(", "); // Append the hidden card
             dealerString.append(hand.get(1)); // Append the shown card
+
         }
-
         dealerString.append(" (").append(status).append(")");
-
         return dealerString.toString();
     }
-
 }

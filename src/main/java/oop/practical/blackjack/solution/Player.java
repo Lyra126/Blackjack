@@ -101,13 +101,16 @@ public class Player {
         int playerTotal = calculateTotal(hand);
         int dealerTotal = dealer.calculateTotal();
         //if player busted
-        if(calculateTotal(hand) == 21 || playerTotal > dealerTotal){
+        if(playerTotal > 21 ){
+            status = "busted";
+            dealer.updateStatus("won");
+        } else if(playerTotal == 21){
             status = "won";
             dealer.updateStatus("lost");
-        } else  if(playerTotal < dealerTotal){
+        } else if(dealerTotal == 21){
             status = "lost";
             dealer.updateStatus("won");
-        } else {
+        }else {
             status = "playing";
             dealer.updateStatus("waiting");
         }
@@ -146,20 +149,20 @@ public class Player {
 
     }
 
-public void hit(Dealer dealer){
-    int playerTotal = calculateTotal(hand);
-    int dealerTotal = dealer.calculateTotal();
-    if(playerTotal > 21) {
-        status = "busted";
-        dealer.updateStatus("won");
-    } else if(playerTotal == 21) {
-        status = "won";
-        dealer.updateStatus("lost");
-    }else{
-        status = "playing";
-        dealer.updateStatus("waiting");
+    public void hit(Dealer dealer){
+        int playerTotal = calculateTotal(hand);
+        int dealerTotal = dealer.calculateTotal();
+        if(playerTotal > 21) {
+            status = "busted";
+            dealer.updateStatus("won");
+        } else if(playerTotal == 21) {
+            status = "won";
+            dealer.updateStatus("lost");
+        }else{
+            status = "playing";
+            dealer.updateStatus("waiting");
+        }
     }
-}
 
 
 
