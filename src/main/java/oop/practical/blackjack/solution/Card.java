@@ -1,6 +1,6 @@
 package oop.practical.blackjack.solution;
 
-public record Card(oop.practical.blackjack.solution.Card.Rank rank, oop.practical.blackjack.solution.Card.Suite suite) {
+public record Card(Rank rank, Suite suite) {
 
     public enum Rank {
         ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING;

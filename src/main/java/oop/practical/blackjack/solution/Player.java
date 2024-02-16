@@ -203,7 +203,7 @@ public class Player {
         playerString.append("(").append(total).append("): ");
         for (Card card : hand)
             playerString.append(card.toString()).append(", ");
-        if (!playerString.isEmpty()) 
+        if (!playerString.isEmpty())
             playerString.delete(playerString.length() - 2, playerString.length());
         playerString.append(" (").append(status).append(")");
 

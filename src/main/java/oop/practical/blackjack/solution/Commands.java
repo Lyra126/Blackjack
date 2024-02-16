@@ -97,7 +97,7 @@ public final class Commands {
             for (int i = 0; i < cards.size(); i++) {
                 Card card = Card.parse(cards.get(i));
                 if(card!=null) {
-                    if ((i % 2 == 0) || dealer.totalCards() >= 2)
+                    if ((i % 2 == 0) || dealer.totalCards() == 2)
                         player.addCard(card);
                     else
                         dealer.addCard(card);
