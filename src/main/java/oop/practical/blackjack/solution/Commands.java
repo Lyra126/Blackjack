@@ -94,7 +94,8 @@ public final class Commands {
                 }
             }
         } else if (!cards.isEmpty()) { // Deal cards from the provided list
-            for (int i = 0; i < cards.size(); i++) {
+            int cardSize = cards.size();
+            for (int i = 0; i < cardSize; i++) {
                 Card card = Card.parse(cards.get(i));
                 if(card!=null) {
                     if ((i % 2 == 0) || dealer.totalCards() == 2)
@@ -133,14 +134,17 @@ public final class Commands {
     }
 
     public String split() {
-        player2.clearHands();
-        if(player.hasCards()) {
-            player.split(player2);
-            player.updateHandStatus();
-            player2.updateHandStatus();
-            player.splitWin(dealer, player2);
+        if(player.canSplit()) {
+            player2.clearHands();
+            if (player.hasCards()) {
+                player.split(player2);
+                player.updateHandStatus();
+                player2.updateHandStatus();
+                player.splitWin(dealer, player2);
+            }
+            return "Hand split";
         }
-        return "Hand split";
+        return "Can't split";
     }
 
     public String doubleDown() {

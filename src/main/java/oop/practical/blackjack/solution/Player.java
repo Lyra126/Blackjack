@@ -62,6 +62,12 @@ public class Player {
         isBust = false;
     }
 
+    public Boolean canSplit(){
+        if(totalCards() > 2)
+            return true;
+        return false;
+    }
+
     public String split(Player player2) {
         for (int i = 1; i < hand.size(); i ++)
             player2.addCard(hand.remove(i));
