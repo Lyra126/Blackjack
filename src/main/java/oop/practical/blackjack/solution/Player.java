@@ -63,7 +63,7 @@ public class Player {
     }
 
     public Boolean canSplit(){
-        if(totalCards() > 2)
+        if(totalCards() >= 2)
             return true;
         return false;
     }
@@ -150,8 +150,10 @@ public class Player {
     public void stand(Dealer dealer){
         int playerTotal = calculateTotal();
         int dealerTotal = dealer.calculateTotal();
-
-        if(playerTotal > dealerTotal){
+        if(dealer.isBust()) {
+            updateStatus("won");
+            dealer.updateStatus("busted");
+        }else if(playerTotal > dealerTotal){
             updateStatus("won");
             dealer.updateStatus("lost");
         } else  if(playerTotal < dealerTotal){

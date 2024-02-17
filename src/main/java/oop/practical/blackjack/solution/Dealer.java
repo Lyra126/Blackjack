@@ -71,8 +71,11 @@ public class Dealer {
         } else if (!hand.isEmpty()) {
             shownCard = String.valueOf(getValue(hand.get(1)));
             dealerString.append("(").append(total).append("): ");
-            dealerString.append(hand.get(0)).append(", ");
-            dealerString.append(hand.get(1)); // Append the shown card
+            for (int i = 0; i < hand.size(); i++) {
+                dealerString.append(hand.get(i));
+                if (i < hand.size() - 1)
+                    dealerString.append(", ");
+            }
         }
         dealerString.append(" (").append(status).append(")");
         return dealerString.toString();

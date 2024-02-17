@@ -41,6 +41,11 @@ public class Deck {
         updateStatus();
     }
 
+    public void addCard(Card card) {
+        cards.add(card);
+        updateStatus();
+    }
+
     public String inspect() {
         StringBuilder deckString = new StringBuilder("Deck: ");
         if(cards.isEmpty()) {

@@ -67,7 +67,6 @@ public final class Commands {
     public String deck(List<String> cards) {
         if (cards.isEmpty()) {
             deck = new Deck();
-            // Add a standard deck of cards to the deck
             for (Card.Suite suite : Card.Suite.values())
                 for (Card.Rank rank : Card.Rank.values())
                     deck.addCard(new Card(rank, suite).toString());
@@ -84,7 +83,7 @@ public final class Commands {
         //if there has been no list of cards provided and the deck has cards, deal them
         if (cards.isEmpty() && !deck.isEmpty()) {
             int deckSize = deck.getSize();
-            for (int i = 0; i < deckSize; i++) {
+            for (int i = 0; i < 4; i++) {
                 Card card = deck.dealCard();
                 if(card != null ) {
                     if (i % 2 == 0 || dealer.totalCards() == 2)
@@ -95,7 +94,7 @@ public final class Commands {
             }
         } else if (!cards.isEmpty()) { // Deal cards from the provided list
             int cardSize = cards.size();
-            for (int i = 0; i < cardSize; i++) {
+            for (int i = 0; i < 4; i++) {
                 Card card = Card.parse(cards.get(i));
                 if(card!=null) {
                     if ((i % 2 == 0) || dealer.totalCards() == 2)
@@ -104,6 +103,9 @@ public final class Commands {
                         dealer.addCard(card);
                 } else
                     return "Error: Invalid card format";
+            }
+            for(int i = 4; i < cardSize ; i++){
+                deck.addCard(Card.parse(cards.get(i)));
             }
         } else
             return "Error: Deck is empty";
@@ -125,6 +127,10 @@ public final class Commands {
     }
 
     public String stand() {
+        if(!deck.isEmpty()) {
+            dealer.addCard(deck.dealCard());
+            deck.updateStatus();
+        }
         if(player2.hasCards())
             player.stand(dealer, player2);
         else
@@ -134,9 +140,16 @@ public final class Commands {
     }
 
     public String split() {
-        if(player.canSplit()) {
+        if(player.canSplit() && deck.getSize()>=2) {
             player2.clearHands();
-            if (player.hasCards()) {
+            if (player.totalCards() == 2) {
+                player.split(player2);
+                player.addCard(deck.dealCard());
+                player2.addCard(deck.dealCard());
+                player.updateHandStatus();
+                player2.updateHandStatus();
+                player.splitWin(dealer, player2);
+            } else {
                 player.split(player2);
                 player.updateHandStatus();
                 player2.updateHandStatus();
