@@ -10,6 +10,7 @@ public final class Commands {
     private final Player player;
     private final Player player2;
     private final Dealer dealer;
+    private String error;
 
     public Commands(){
         deck = new Deck();
@@ -101,20 +102,25 @@ public final class Commands {
                         player.addCard(card);
                     else
                         dealer.addCard(card);
-                } else
-                    return "Error: Invalid card format";
+                } else {
+                    error = "Error: Invalid card format";
+                    return error;
+                }
             }
             for(int i = 4; i < cardSize ; i++){
                 deck.addCard(Card.parse(cards.get(i)));
             }
-        } else
-            return "Error: Deck is empty";
+        } else {
+            error = "Error: Deck is empty";
+            return error;
+        }
 
         // Update statuses
         player.updateHandStatus();
         dealer.updateHandStatus();
         player.hasWon(dealer);
-        return "Initial cards dealt";
+        error = "Initial cards dealt";
+        return error;
     }
 
     public String hit() {
@@ -183,6 +189,8 @@ public final class Commands {
                 yield players.toString();
             case "dealer":
                 yield dealer.inspect();
+            case "error":
+                yield error;
             default:
                 yield "\n";
         };

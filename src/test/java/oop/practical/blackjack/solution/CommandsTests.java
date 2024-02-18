@@ -341,6 +341,79 @@ public final class CommandsTests {
                     Deck: (empty)
                     Player (19): 10S, 9C (won)
                     Dealer (17): 10H, 7D (lost)
+                    """),
+                    Arguments.of("Deal Initial Cards", """
+                    (deal :2S :10H :AC :7D)
+                    """, """
+                    Deck: (empty)
+                    Player (13): 2S, AC (playing)
+                    Dealer (? + 7): ?, 7D (waiting)
+                    """),
+                    Arguments.of("Deal Blackjack (Finished Round) ", """
+                    (deal :JS :10H :AC :6D)
+                    """, """
+                    Deck: (empty)
+                    Player (21): JS, AC (won)
+                    Dealer (16): 10H, 6D (lost)
+                    """),
+                    Arguments.of("Hit Safe (Playing) ", """
+                    (deal :2S :10H :AC :7D :5S)
+                    (hit)
+                    """, """
+                    Deck: (empty)
+                    Player (18): 2S, AC, 5S (playing)
+                    Dealer (? + 7): ?, 7D (waiting)
+                    """),
+                    Arguments.of("Hit Bust (Busted) ", """
+                    (deal :2S :10H :QC :7D :KS)
+                    (hit)
+                    """, """
+                   Deck: (empty)
+                   Player (22): 2S, QC, KS (busted)
+                   Dealer (17): 10H, 7D (won)
+                    """),
+                    Arguments.of("Stand (Ends Turn) ", """
+                   (deal :2S :10H :AC :7D)
+                   (stand)
+                    """, """
+                   Deck: (empty)
+                   Player (13): 2S, AC (lost)
+                   Dealer (17): 10H, 7D (won)
+                    """),
+                    Arguments.of("Split (Multiple Hands) ", """
+                   (deal :10S :10H :10C :7D :6S :QC)
+                   (split
+                    """, """
+                   Deck: (empty)
+                   Player (16): 10S, 6S (playing)
+                   Player (20): 10C, QC (waiting)
+                   Dealer (? + 7): ?, 7D (waiting, waiting)
+                    """),
+                    Arguments.of("Split Stand (Second Hand) ", """
+                   (deal :10S :10H :10C :7D :6S :QC)
+                   (split)
+                   (stand)
+                    """, """
+                   Deck: (empty)
+                   Player (16): 10S, 6S (resolved)
+                   Player (20): 10C, QC (playing)
+                   Dealer (? + 7): ?, 7D (waiting, waiting)
+                    """),
+                    Arguments.of("Double Down (Ends Turn) ", """
+                   deal :2S :10H :AC :7D :6S)
+                   (double-down)
+                    """, """
+                   Deck: (empty)
+                   Player (19): 2S, AC, 6S (won)
+                   Dealer (17): 10H, 7D (lost)
+                    """),
+                    Arguments.of("Dealer Stand (>= 17)", """
+                   deal :10S :10H :9C :7D)
+                   (stand)
+                    """, """
+                    Deck: (empty)
+                    Player (19): 10S, 9C (won)
+                    Dealer (17): 10H, 7D (lost)
                     """)
             );
         }
@@ -360,8 +433,7 @@ public final class CommandsTests {
                     (deck :2S :10H :AC :7D)
                     """, """
                     Deck: 2S, 10H, AC, 7D
-                    """)
-                    );
+                    """));
         }
         @ParameterizedTest
         @MethodSource
