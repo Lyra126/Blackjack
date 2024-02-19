@@ -8,6 +8,7 @@ public class Player {
     private String status;
 
     public boolean hasCards() { return !(hand.isEmpty()); }
+    public String getStatus(){ return status; }
     private void updateStatus(String status) { this.status = status; }
     private void updateBustStatus() { isBust = isHandBust(hand); }
     public int totalCards() { return hand.size(); }
@@ -63,7 +64,7 @@ public class Player {
     }
 
     public Boolean canSplit(){
-        if(totalCards() >= 2)
+        if(totalCards() == 2 && hand.get(0).getValue() == hand.get(1).getValue())
             return true;
         return false;
     }

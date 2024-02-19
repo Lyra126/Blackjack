@@ -18,6 +18,7 @@ public final class Commands {
         //only used when split is called
         player2 = new Player();
         dealer = new Dealer();
+        error = "";
     }
 
     public String execute(Ast ast) {
@@ -65,7 +66,9 @@ public final class Commands {
         }
     }
 
+
     public String deck(List<String> cards) {
+        error = "";
         if (cards.isEmpty()) {
             deck = new Deck();
             for (Card.Suite suite : Card.Suite.values())
@@ -78,6 +81,7 @@ public final class Commands {
     }
 
     public String deal(List<String> cards) {
+        error = "";
         player.clearHands();
         dealer.clearHand();
 
@@ -104,26 +108,34 @@ public final class Commands {
                         dealer.addCard(card);
                 } else {
                     error = "Error: Invalid card format";
-                    return error;
+                    return "Invalid card format";
                 }
             }
             for(int i = 4; i < cardSize ; i++){
                 deck.addCard(Card.parse(cards.get(i)));
             }
         } else {
-            error = "Error: Deck is empty";
-            return error;
+            error = "Error: The deck is empty and thus cards cannot be dealt";
+            return "Deck is empty";
         }
 
         // Update statuses
         player.updateHandStatus();
         dealer.updateHandStatus();
         player.hasWon(dealer);
-        error = "Initial cards dealt";
-        return error;
+        return "Initial cards dealt";
     }
 
     public String hit() {
+        error = "";
+        if(player.getStatus().equals("won")  || player.getStatus().equals("lost") || player.getStatus().equals("busted")){
+            error = "Error: Game ended already";
+            return "Game already ended";
+        }
+        if(player.totalCards() == 0 && dealer.totalCards() == 0 && deck.getSize() == 0){
+            error = "Error: No cards available to hit";
+            return "No cards available to hit";
+        }
         if(!deck.isEmpty()) {
             player.addCard(deck.dealCard());
             player.hit(dealer);
@@ -133,6 +145,7 @@ public final class Commands {
     }
 
     public String stand() {
+        error = "";
         if(!deck.isEmpty()) {
             dealer.addCard(deck.dealCard());
             deck.updateStatus();
@@ -146,6 +159,7 @@ public final class Commands {
     }
 
     public String split() {
+        error = "";
         if(player.canSplit() && deck.getSize()>=2) {
             player2.clearHands();
             if (player.totalCards() == 2) {
@@ -163,18 +177,34 @@ public final class Commands {
             }
             return "Hand split";
         }
+        error = "Error: Can't Split";
         return "Can't split";
     }
 
     public String doubleDown() {
+        error = "";
         if(!deck.isEmpty() || player.hasCards()) {
             if(!deck.isEmpty())
                 player.addCard(deck.dealCard());
+            else{
+                error = "Error: No cards to deal";
+                return "No cards to deal";
+            }
             player.updateHandStatus();
             player.doubleDown(dealer);
             deck.updateStatus();
+            return "Player doubles down, comparing hands";
         }
-        return "Player doubles down, comparing hands";
+        if(deck.isEmpty()){
+            error = "Error: No cards to deal";
+            return "No cards to deal";
+        }
+        if(player.totalCards() != 2){
+            error = "Error: player needs to have 2 cards to play this action";
+            return "Player needs to have 2 cards to play this action";
+        }
+        error = "Error: Unable to play double-down";
+        return "Unable to play double-down";
     }
 
     public String inspect(String name) {

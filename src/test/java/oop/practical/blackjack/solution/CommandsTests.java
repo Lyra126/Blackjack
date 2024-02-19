@@ -285,7 +285,7 @@ public final class CommandsTests {
                     (hit)
                     """, null),
                     Arguments.of("Split Invalid Usage", """
-                    (deal :10S :10H :4C :7D :6S :QC)
+                    (deal :10S :10H :4C :7D :6S :QC) 
                     (split)
                     """, null),
                     Arguments.of("Double down - Player Win", """
@@ -315,7 +315,7 @@ public final class CommandsTests {
                     """, """
                     Deck: (empty)
                     Player (19): 10S, 9C (won)
-                    Dealer (17): 10H, 7D (lost)           
+                    Dealer (17): 10H, 7D (lost)
                     """),
                     Arguments.of("Dealer - Hit", """
                     (deal :10S :10H :9C :6D :4S)
@@ -382,7 +382,7 @@ public final class CommandsTests {
                     """),
                     Arguments.of("Split (Multiple Hands) ", """
                    (deal :10S :10H :10C :7D :6S :QC)
-                   (split
+                   (split)
                     """, """
                    Deck: (empty)
                    Player (16): 10S, 6S (playing)
@@ -400,7 +400,7 @@ public final class CommandsTests {
                    Dealer (? + 7): ?, 7D (waiting, waiting)
                     """),
                     Arguments.of("Double Down (Ends Turn) ", """
-                   deal :2S :10H :AC :7D :6S)
+                   (deal :2S :10H :AC :7D :6S)
                    (double-down)
                     """, """
                    Deck: (empty)
@@ -408,7 +408,7 @@ public final class CommandsTests {
                    Dealer (17): 10H, 7D (lost)
                     """),
                     Arguments.of("Dealer Stand (>= 17)", """
-                   deal :10S :10H :9C :7D)
+                   (deal :10S :10H :9C :7D)
                    (stand)
                     """, """
                     Deck: (empty)
