@@ -1,4 +1,6 @@
 package oop.practical.blackjack.solution;
+import java.util.Collections;
+import java.util.Random;
 
 import oop.practical.blackjack.lisp.Ast;
 
@@ -71,17 +73,21 @@ public final class Commands {
         error = "";
         if (cards.isEmpty()) {
             deck = new Deck();
-            for (Card.Suite suite : Card.Suite.values())
-                for (Card.Rank rank : Card.Rank.values())
+            for (Card.Suite suite : Card.Suite.values()) {
+                for (Card.Rank rank : Card.Rank.values()) {
                     deck.addCard(new Card(rank, suite).toString());
+                }
+            }
+            long seed = System.nanoTime(); // Use current time as seed
+            Collections.shuffle(deck.getCards(), new Random(seed)); // Shuffle the deck with a random seed
         } else
             deck.setDeck(cards);
         deck.updateStatus();
         return "Deck Initialized";
+
     }
 
     public String deal(List<String> cards) {
-        error = "";
         player.clearHands();
         dealer.clearHand();
 
@@ -91,7 +97,7 @@ public final class Commands {
             for (int i = 0; i < 4; i++) {
                 Card card = deck.dealCard();
                 if(card != null ) {
-                    if (i % 2 == 0 || dealer.totalCards() == 2)
+                    if (i % 2 == 0 )
                         player.addCard(card);
                     else
                         dealer.addCard(card);
@@ -102,7 +108,7 @@ public final class Commands {
             for (int i = 0; i < 4; i++) {
                 Card card = Card.parse(cards.get(i));
                 if(card!=null) {
-                    if ((i % 2 == 0) || dealer.totalCards() == 2)
+                    if ((i % 2 == 0) )
                         player.addCard(card);
                     else
                         dealer.addCard(card);
@@ -132,12 +138,15 @@ public final class Commands {
             error = "Error: Game ended already";
             return "Game already ended";
         }
-        if(player.totalCards() == 0 && dealer.totalCards() == 0 && deck.getSize() == 0){
+        if(deck.getSize() == 0){
             error = "Error: No cards available to hit";
             return "No cards available to hit";
         }
+
         if(!deck.isEmpty()) {
             player.addCard(deck.dealCard());
+            if(!deck.isEmpty() && dealer.calculateTotal() <= 16)
+                dealer.addCard(deck.dealCard());
             player.hit(dealer);
             deck.updateStatus();
         }
@@ -146,6 +155,15 @@ public final class Commands {
 
     public String stand() {
         error = "";
+        //no other action has been called yet
+        if(deck.isEmpty() && player.totalCards() == 0 && dealer.totalCards() == 0) {
+            error = "Stand cannot be the first action";
+            return "Invalid Action";
+        }
+        if(player.getStatus().equals("resolved") || player2.getStatus().equals("resolved")){
+            error = "Stand action cannot be used after resolved";
+            return "Invalid Action";
+        }
         if(!deck.isEmpty()) {
             dealer.addCard(deck.dealCard());
             deck.updateStatus();
@@ -183,6 +201,13 @@ public final class Commands {
 
     public String doubleDown() {
         error = "";
+
+
+        if(player.totalCards() > 2){
+            error = "Cannot double down after hit";
+            return "Invalid Action";
+        }
+
         if(!deck.isEmpty() || player.hasCards()) {
             if(!deck.isEmpty())
                 player.addCard(deck.dealCard());

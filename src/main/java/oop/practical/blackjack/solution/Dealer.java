@@ -10,6 +10,8 @@ public class Dealer {
 
     public Dealer() {
         hand = new ArrayList<>();
+        status = "(waiting)";
+        isBust = false;
     }
     public List<Card> getHand() { return hand; }
     public void addCard(Card card) {

@@ -103,6 +103,14 @@ public final class CommandsTests {
                     Player (13): 2S, AC (lost)
                     Dealer (21): 10H, AD (won)
                     """),
+                    Arguments.of("Exactly 21 (Tied)", """
+                        (deal :2S :10H :AC :6D :8S :5H)
+                        (hit)
+                        """, """
+                        Deck: (empty)
+                        Player (21): 2S, AC, 8S (tied)
+                        Dealer (21): 10H, 6D, 5H (tied)
+                        """),
                     Arguments.of("Empty Deck", """
                     (deal)
                     """, null)
@@ -111,18 +119,42 @@ public final class CommandsTests {
 
     }
 
+    /*
     @Nested
-    public final class HitTests {
-
+    public final class extraTest {
         @ParameterizedTest
         @MethodSource
-        public void testHit(String name, String setup, String expected) {
-            testState(setup, expected);
+        public void extraTests(String name, String setup, String expected) {
+            test(setup, "(do (inspect :error))", expected);
         }
 
-        private static Stream<Arguments> testHit() {
+        private static Stream<Arguments> extraTests() {
             return Stream.of(
-                    Arguments.of("Playing", """
+                    Arguments.of("Tied Scenario", """
+                    (deal :JS :AD :10H :AH)
+                    """, """
+                    Deck: (empty)
+                    Player (21): JS, AD (tied)
+                    Dealer (21): 10H, AH (tied)
+                    """)
+            );
+}
+}
+*/
+
+
+@Nested
+public final class HitTests {
+
+@ParameterizedTest
+@MethodSource
+public void testHit(String name, String setup, String expected) {
+    testState(setup, expected);
+}
+
+private static Stream<Arguments> testHit() {
+    return Stream.of(
+            Arguments.of("Playing", """
                     (deal :2S :10H :AC :7D :5S)
                     (hit)
                     """, """
@@ -493,6 +525,29 @@ public final class CommandsTests {
                     Arguments.of("Invalid Split", """
                     (deal :10S :10H :9C :7D)
                     (split)
+                    """, null),
+                    Arguments.of("Hit Before Deal - Error", """
+                    (hit)
+                    (deal :JS :AD :10H :AH)
+                    """, null),
+                    Arguments.of(" Empty Deck ", """
+                    (deal :JS :AD :10H :AH)
+                    (hit)
+                    """, null),
+                    Arguments.of(" Stand Before Deal ", """
+                    (stand)
+                    (deal :JS :AD :10H :AH)
+                    """, null),
+                    Arguments.of("Stand After Resolved", """
+                    (deal :10S :10H :10C :7D :6S :QC)
+                    (split)
+                    (stand)
+                    (stand)
+                    """, null),
+                    Arguments.of("Double Down After Hit ", """
+                    (deal :2S :10H :AC :7D :5S)
+                    (hit)
+                    (double-down)
                     """, null)
             );
         }

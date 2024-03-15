@@ -16,6 +16,7 @@ public class Player {
     public Player() {
         hand = new ArrayList<>();
         isBust = false;
+        status = "(playing)";
     }
 
     public void addCard(Card card) {
@@ -80,7 +81,15 @@ public class Player {
         int player2Total = player2.calculateTotal();
         int dealerTotal = dealer.calculateTotal();
 
-        if(player1Total > 21 ){
+        if (player1Total == 21 && dealerTotal == 21) {
+            updateStatus("tied");
+            player2.updateStatus("playing");
+            dealer.updateStatus("tied, waiting");
+        } else if (player2Total == 21 && dealerTotal == 21) {
+            updateStatus("playing");
+            player2.updateStatus("tied");
+            dealer.updateStatus("waiting, tied");
+        }if(player1Total > 21 ){
             updateStatus("busted");
             player2.updateStatus("playing");
             dealer.updateStatus("won, waiting");
@@ -118,7 +127,10 @@ public class Player {
         int playerTotal = calculateTotal();
         int dealerTotal = dealer.calculateTotal();
 
-        if(playerTotal > 21 ){
+        if(playerTotal == 21 && dealerTotal == 21) {
+            updateStatus("tied");
+            dealer.updateStatus("tied");
+        } else if(playerTotal > 21 ){
             updateStatus("busted");
             dealer.updateStatus("won");
         } else if(playerTotal == 21){
@@ -136,7 +148,10 @@ public class Player {
         int playerTotal = calculateTotal();
         int dealerTotal = dealer.calculateTotal();
 
-        if(playerTotal > dealerTotal){
+        if (playerTotal > 21) {
+            updateStatus("busted");
+            dealer.updateStatus("won");
+        }else if(playerTotal > dealerTotal){
             updateStatus("won");
             dealer.updateStatus("lost");
         } else  if(playerTotal < dealerTotal){
@@ -151,7 +166,10 @@ public class Player {
     public void stand(Dealer dealer){
         int playerTotal = calculateTotal();
         int dealerTotal = dealer.calculateTotal();
-        if(dealer.isBust()) {
+        if (playerTotal == dealerTotal) {
+            updateStatus("tied");
+            dealer.updateStatus("tied");
+        } else if(dealer.isBust()) {
             updateStatus("won");
             dealer.updateStatus("busted");
         }else if(playerTotal > dealerTotal){
@@ -172,7 +190,17 @@ public class Player {
         int dealerTotal = dealer.calculateTotal();
 
         if(player1Total >= 21) {
-            if (player1Total == 21) {
+
+
+            if (player1Total == 21 && dealerTotal == 21) {
+                updateStatus("tied");
+                player2.updateStatus("playing");
+                dealer.updateStatus("tied");
+            } else if (player2Total == 21 && dealerTotal == 21) {
+                updateStatus("playing");
+                player2.updateStatus("tied");
+                dealer.updateStatus("tied");
+            }else if (player1Total == 21) {
                 updateStatus("won");
                 player2.updateStatus("playing");
                 dealer.updateStatus("lost, waiting");
@@ -189,9 +217,13 @@ public class Player {
     }
 
     public void hit(Dealer dealer){
+
         int playerTotal = calculateTotal();
         int dealerTotal = dealer.calculateTotal();
-        if(playerTotal > 21) {
+        if(playerTotal == 21 && dealerTotal == 21) {
+            updateStatus("tied");
+            dealer.updateStatus("tied");
+        } else if(playerTotal > 21) {
             updateStatus("busted");
             dealer.updateStatus("won");
         } else if(playerTotal == 21) {

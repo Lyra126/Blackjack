@@ -8,6 +8,7 @@ public class Deck {
     private String status;
 
     public int getSize() { return cards.size(); }
+    public List<Card> getCards() { return cards; }
     public boolean isEmpty(){
         return cards.isEmpty();
     }
