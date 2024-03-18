@@ -204,10 +204,30 @@ public class Player {
                 updateStatus("won");
                 player2.updateStatus("playing");
                 dealer.updateStatus("lost, waiting");
-            }else {
+            }else{
                 updateStatus("busted");
-                player2.updateStatus("playing");
-                dealer.updateStatus("won, waiting");
+                if(player2Total > dealerTotal) {
+                    player2.updateStatus("won");
+                    dealer.updateStatus("won, lost");
+                }else{
+                    if(dealerTotal > 21){
+                        player2.updateStatus("won");
+                        dealer.updateStatus("won, busted");
+                    } else{
+                        player2.updateStatus("lost");
+                        dealer.updateStatus("won, won");
+                    }
+
+                }
+            }
+        } else if(player2Total > 21){
+            player2.updateStatus("busted");
+            if(player1Total > dealerTotal) {
+                updateStatus("won");
+                dealer.updateStatus("lost, won");
+            }else{
+                updateStatus("lost");
+                dealer.updateStatus("won, won");
             }
         } else{
             updateStatus("resolved");
@@ -232,6 +252,56 @@ public class Player {
         }else{
             updateStatus("playing");
             dealer.updateStatus("waiting");
+        }
+    }
+
+    public void hit(Dealer dealer, Player player2){
+        int player1Total = calculateTotal();
+        int player2Total = player2.calculateTotal();
+        int dealerTotal = dealer.calculateTotal();
+
+        if (player1Total == 21 && dealerTotal == 21) {
+            updateStatus("tied");
+            player2.updateStatus("playing");
+            dealer.updateStatus("tied, waiting");
+        } else if (player2Total == 21 && dealerTotal == 21) {
+            updateStatus("playing");
+            player2.updateStatus("tied");
+            dealer.updateStatus("waiting, tied");
+        }else if(player1Total > 21 && player2Total > 21 ){
+            updateStatus("busted");
+            player2.updateStatus("busted");
+            dealer.updateStatus("won, won");
+        } else if(player1Total > 21 ){
+            updateStatus("busted");
+            player2.updateStatus("playing");
+            dealer.updateStatus("won, waiting");
+        } else if(player1Total == 21){
+            updateStatus("won");
+            if(player2Total == 21)
+                player2.updateStatus("won");
+            else
+                player2.updateStatus("playing");
+            dealer.updateStatus("lost, waiting");
+        } else if(player2Total > 21 ){
+            updateStatus("playing");
+            player2.updateStatus("busted");
+            dealer.updateStatus("waiting, won");
+        } else if(player2Total == 21){
+            if(player1Total == 21)
+                updateStatus("won");
+            else
+                updateStatus("playing");
+            player2.updateStatus("won");
+            dealer.updateStatus("waiting, lost");
+        }else if(dealerTotal == 21){
+            updateStatus("lost");
+            player2.updateStatus("lost");
+            dealer.updateStatus("won, won");
+        }else {
+            updateStatus("playing");
+            player2.updateStatus("waiting");
+            dealer.updateStatus("waiting, waiting");
         }
     }
 

@@ -105,6 +105,18 @@ public final class Commands {
             }
         } else if (!cards.isEmpty()) { // Deal cards from the provided list
             int cardSize = cards.size();
+            if(cardSize < 4){
+                error = "Cannot deal 4 alternating cards to dealer and player";
+                for (int i = 0; i < cardSize; i++) {
+                    Card card = Card.parse(cards.get(i));
+                    if ((i % 2 == 0))
+                        player.addCard(card);
+                    else
+                        dealer.addCard(card);
+                }
+
+                return "Initial cards cannot be dealt";
+            }
             for (int i = 0; i < 4; i++) {
                 Card card = Card.parse(cards.get(i));
                 if(card!=null) {
@@ -134,7 +146,7 @@ public final class Commands {
 
     public String hit() {
         error = "";
-        if(player.getStatus().equals("won")  || player.getStatus().equals("lost") || player.getStatus().equals("busted")){
+        if((player.getStatus().equals("won")  || player.getStatus().equals("lost") || player.getStatus().equals("busted")) && !player2.hasCards()){
             error = "Error: Game ended already";
             return "Game already ended";
         }
@@ -142,13 +154,29 @@ public final class Commands {
             error = "Error: No cards available to hit";
             return "No cards available to hit";
         }
-
         if(!deck.isEmpty()) {
-            player.addCard(deck.dealCard());
-            if(!deck.isEmpty() && dealer.calculateTotal() <= 16)
-                dealer.addCard(deck.dealCard());
-            player.hit(dealer);
-            deck.updateStatus();
+            //if player 1 already hit, then it's player2's turn
+            player.updateHandStatus();
+            if(player.totalCards() % 2 == 1 && player2.totalCards() % 2 == 0) {
+                player2.addCard(deck.dealCard());
+                if (!deck.isEmpty() && dealer.calculateTotal() <= 16)
+                    dealer.addCard(deck.dealCard());
+                player2.updateHandStatus();
+                player.hit(dealer, player2);
+                deck.updateStatus();
+
+            } else{
+                player.addCard(deck.dealCard());
+                player.updateHandStatus();
+                if (!deck.isEmpty() && dealer.calculateTotal() <= 16)
+                   dealer.addCard(deck.dealCard());
+                if (player2.hasCards())
+                    player.hit(dealer, player2);
+                else {
+                    player.hit(dealer);
+                    deck.updateStatus();
+                }
+            }
         }
         return "Player hits";
     }
@@ -160,11 +188,11 @@ public final class Commands {
             error = "Stand cannot be the first action";
             return "Invalid Action";
         }
-        if(player.getStatus().equals("resolved") || player2.getStatus().equals("resolved")){
+        if(player.getStatus().equals("resolved") || player2.getStatus().equals("resolved") || player.getStatus().equals("won") || player2.getStatus().equals("won")|| player.getStatus().equals("lost") || player2.getStatus().equals("lost")){
             error = "Stand action cannot be used after resolved";
             return "Invalid Action";
         }
-        if(!deck.isEmpty()) {
+        while(!deck.isEmpty()) {
             dealer.addCard(deck.dealCard());
             deck.updateStatus();
         }

@@ -119,28 +119,31 @@ public final class CommandsTests {
 
     }
 
-    /*
+
     @Nested
     public final class extraTest {
         @ParameterizedTest
         @MethodSource
         public void extraTests(String name, String setup, String expected) {
-            test(setup, "(do (inspect :error))", expected);
+            testState(setup, expected);
+            //test(setup, "(do (inspect :dealer))", expected);
         }
 
         private static Stream<Arguments> extraTests() {
             return Stream.of(
-                    Arguments.of("Tied Scenario", """
-                    (deal :JS :AD :10H :AH)
+
+                    Arguments.of(" Both Hands Busted (Dealer Would Hit)", """
+                    (deal :10S :10H :10C :6D :6S :QC :8H :3D)
+                    (split)
+                    (hit)
+                    (hit)
                     """, """
-                    Deck: (empty)
-                    Player (21): JS, AD (tied)
-                    Dealer (21): 10H, AH (tied)
+                    Dealer (16): 10H, 6D (won, won)
                     """)
             );
+    }
 }
-}
-*/
+
 
 
 @Nested
@@ -485,6 +488,95 @@ private static Stream<Arguments> testHit() {
                     """, """
                     Player (16): 10S, 6S (playing)
                     Player (20): 10C, QC (waiting)
+                    """),Arguments.of("Dealer Blackjack (2)", """
+                    (deal :2S :10H :AC :AD)
+                    """, """
+                    Player (13): 2S, AC (lost)
+                    """),
+                    Arguments.of("Player And Dealer Blackjack (2)", """
+                    (deal :JS :10H :AC :AD)
+                    """, """
+                    Player (21): JS, AC (tied)
+                    """),
+                    Arguments.of("Exactly 21 (Tied)", """
+                    (deal :2S :10H :AC :6D :8S :5H)
+                    (hit)
+                    """, """
+                    Player (21): 2S, AC, 8S (tied)
+                    """),
+                    Arguments.of(" Empty Deck Recovery (2)", """
+                    (deal :2S :10H :AC :7D)
+                    (hit)
+                    (deck :5S)
+                    (hit)
+                    """, """
+                    Player (18): 2S, AC, 5S (playing)
+                    """),
+                    Arguments.of(" Stand (Tied) (2)", """
+                    (deal :8S :10H :AC :9D)
+                    (stand)
+                    """, """
+                    Player (19): 8S, AC (tied)
+                    """),
+                    Arguments.of("  First Hand Busted (2)", """
+                    (deal :10S :10H :10C :7D :6S :QC :8H)
+                    (split)
+                    (hit)
+                    """, """
+                    Player (24): 10S, 6S, 8H (busted)
+                    Player (20): 10C, QC (playing)"""),
+                    Arguments.of(" Both Hands Busted (Player)", """
+                    (deal :10S :10H :10C :7D :6S :QC :8H :3D)
+                    (split)
+                    (hit)
+                    (hit)
+                    """, """
+                    Player (24): 10S, 6S, 8H (busted)
+                    Player (23): 10C, QC, 3D (busted)
+                    """),
+                    Arguments.of("Player And Dealer Bust (2)", """
+                    (deal :10S :10H :10C :6D :6S :QC :8H :8C)
+                    (split)
+                    (hit)
+                    (stand)
+                    """, """
+                    Player (24): 10S, 6S, 8H (busted)
+                    Player (20): 10C, QC (won)
+                    """),
+                    Arguments.of("Player Loss (4)", """
+                    (deal :2S :10H :10C :7D :10S)
+                    (double-down)
+                    """, """
+                    Player (22): 2S, 10C, 10S (busted)
+                    """), Arguments.of("Stand (Tied) (2)", """
+                    (deal :6S :10H :AC :7D)
+                    (stand)
+                    """, """
+                    Player (17): 6S, AC (tied)
+                    """),
+                    Arguments.of("Hit (Tied) (2)", """
+                    (deal :8S :10H :AC :6D :3S)
+                    (stand)
+                    """, """
+                    Player (19): 8S, AC (tied)
+                    """),
+                    Arguments.of("Hit Multiple (2)", """
+                    (deal :2S :2H :AC :6D :3S :4H :5H)
+                    (stand)
+                    """, """
+                    Player (13): 2S, AC (lost)
+                    """),
+                    Arguments.of("Single Ace Adjustment (2)", """
+                    (deal :10H :5S :7D :AC :10S :4H)
+                    (stand)
+                    """, """
+                    Player (17): 10H, 7D (lost)
+                    """),
+                    Arguments.of("Multiple Ace Adjustment (2)", """
+                    (deal :10H :AS :7D :AC :AH :AD :10S :4H)
+                    (stand)
+                    """, """
+                    Player (17): 10H, 7D (lost)
                     """)
             );
         }
@@ -504,7 +596,97 @@ private static Stream<Arguments> testHit() {
                     (deal :10S :10H :AC :7D)
                     """, """
                     Dealer (17): 10H, 7D (lost)
+                    """),
+                    Arguments.of("Dealer Blackjack (2)", """
+                    (deal :2S :10H :AC :AD)
+                    (inspect :dealer)
+                    """, """
+                    Dealer (21): 10H, AD (won)
+                    """),
+                    Arguments.of("Player And Dealer Blackjack (2)", """
+                    (deal :JS :10H :AC :AD)
+                    (inspect :dealer)
+                    """, """
+                    Dealer (21): 10H, AD (tied)
+                    """),
+                    Arguments.of("Exactly 21 (Tied)", """
+                    (deal :2S :10H :AC :6D :8S :5H)
+                    (hit)
+                    """, """
+                    Dealer (21): 10H, 6D, 5H (tied)
+                    """),
+                    Arguments.of(" Empty Deck Recovery (2)", """
+                    (deal :2S :10H :AC :7D)
+                    (hit)
+                    (deck :5S)
+                    (hit)
+                    """, """
+                    Dealer (? + 7): ?, 7D (waiting)"""),
+                    Arguments.of(" Stand (Tied) (2)", """
+                    (deal :8S :10H :AC :9D)
+                    (stand)
+                    """, """
+                    Dealer (19): 10H, 9D (tied)
+                    """),
+                    Arguments.of("  First Hand Busted (2)", """
+                    (deal :10S :10H :10C :7D :6S :QC :8H)
+                    (split)
+                    (hit)
+                    """, """
+                    Dealer (? + 7): ?, 7D (won, waiting)"""),
+                    Arguments.of(" Both Hands Busted (Dealer Would Stand)", """
+                    (deal :10S :10H :10C :7D :6S :QC :8H :3D)
+                    (split)
+                    (hit)
+                    (hit)
+                    """, """
+                    Dealer (17): 10H, 7D (won, won)
+                    """),
+                    Arguments.of("Player And Dealer Bust (2)", """
+                    (deal :10S :10H :10C :6D :6S :QC :8H :8C)
+                    (split)
+                    (hit)
+                    (stand)
+                    """, """
+                    Dealer (24): 10H, 6D, 8C (won, busted)
+                    """),
+                    Arguments.of("Player Loss (4)", """
+                    (deal :2S :10H :10C :7D :10S)
+                    (double-down)
+                    """, """
+                    Dealer (17): 10H, 7D (won)
+                    """),
+                    Arguments.of("Stand (Tied) (2)", """
+                    (deal :6S :10H :AC :7D)
+                    (stand)
+                    """, """
+                    Dealer (17): 10H, 7D (tied)
+                    """),
+                    Arguments.of("Hit (Tied) (2)", """
+                    (deal :8S :10H :AC :6D :3S)
+                    (stand)
+                    """, """
+                    Dealer (19): 10H, 6D, 3S (tied)
+                    """),
+                    Arguments.of("Hit Multiple (2)", """
+                    (deal :2S :2H :AC :6D :3S :4H :5H)
+                    (stand)
+                    """, """
+                     Dealer (20): 2H, 6D, 3S, 4H, 5H (won)
+                    """),
+                    Arguments.of("Single Ace Adjustment (2)", """
+                    (deal :10H :5S :7D :AC :10S :4H)
+                    (stand)
+                    """, """
+                    Dealer (20): 5S, AC, 10S, 4H (won)
+                    """),
+                    Arguments.of("Multiple Ace Adjustment (2)", """
+                    (deal :10H :AS :7D :AC :AH :AD :10S :4H)
+                    (stand)
+                    """, """
+                    Dealer (18): AS, AC, AH, AD, 10S, 4H (won)
                     """)
+
             );
         }
 
@@ -526,10 +708,6 @@ private static Stream<Arguments> testHit() {
                     (deal :10S :10H :9C :7D)
                     (split)
                     """, null),
-                    Arguments.of("Hit Before Deal - Error", """
-                    (hit)
-                    (deal :JS :AD :10H :AH)
-                    """, null),
                     Arguments.of(" Empty Deck ", """
                     (deal :JS :AD :10H :AH)
                     (hit)
@@ -544,8 +722,25 @@ private static Stream<Arguments> testHit() {
                     (stand)
                     (stand)
                     """, null),
-                    Arguments.of("Double Down After Hit ", """
-                    (deal :2S :10H :AC :7D :5S)
+                    Arguments.of("Single Card (error)", """
+                    (deal :2S)
+                    """,
+                            null),
+                    Arguments.of(" Empty Deck (error) (2)", """
+                    (deal :2S :10H :AC :7D)
+                    (hit)
+                    """, null), Arguments.of(" Hit Before Deal (error)", """
+                    (hit)
+                    """, null),
+                    Arguments.of("  Stand Before Deal (error) (1)", """
+                    (stand)
+                    """, null),
+                    Arguments.of("   Stand After Resolved (error) (1)", """
+                    (deal :JS :10H :AC :6D)
+                    (stand)
+                    """, null),
+                    Arguments.of("Double Down After Hit (error)", """
+                    (deal :2S :10H :AC :7D :6S :4H)
                     (hit)
                     (double-down)
                     """, null)
