@@ -118,31 +118,25 @@ public final class CommandsTests {
         }
 
     }
-
+/*
 
     @Nested
     public final class extraTest {
         @ParameterizedTest
         @MethodSource
         public void extraTests(String name, String setup, String expected) {
-            testState(setup, expected);
-            //test(setup, "(do (inspect :dealer))", expected);
+            //testState(setup, expected);
+            test(setup, "(do (inspect :dealer))", expected);
         }
 
         private static Stream<Arguments> extraTests() {
             return Stream.of(
 
-                    Arguments.of(" Both Hands Busted (Dealer Would Hit)", """
-                    (deal :10S :10H :10C :6D :6S :QC :8H :3D)
-                    (split)
-                    (hit)
-                    (hit)
-                    """, """
-                    Dealer (16): 10H, 6D (won, won)
-                    """)
+
             );
-    }
-}
+        }
+
+}*/
 
 
 
@@ -577,6 +571,21 @@ private static Stream<Arguments> testHit() {
                     (stand)
                     """, """
                     Player (17): 10H, 7D (lost)
+                    """),
+                    Arguments.of("Multiple Hit (2):", """
+                    (deal :2S :10H :AC :7D :3S :4H)
+                    (hit)
+                    (hit)
+                    """, """
+                    Player (20): 2S, AC, 3S, 4H (playing)
+                    """),
+                    Arguments.of("Multiple Ace Adjustment (2):", """
+                    (deal :2S :10H :AC :7D :AS :AH :AD)
+                    (hit)
+                    (hit)
+                    (hit)
+                    """, """
+                    Player (16): 2S, AC, AS, AH, AD (playing)
                     """)
             );
         }
@@ -685,6 +694,29 @@ private static Stream<Arguments> testHit() {
                     (stand)
                     """, """
                     Dealer (18): AS, AC, AH, AD, 10S, 4H (won)
+                    """),
+                    Arguments.of(" Both Hands Busted (Dealer Would Hit)", """
+                    (deal :10S :10H :10C :6D :6S :QC :8H :3D)
+                    (split)
+                    (hit)
+                    (hit)
+                    """, """
+                    Dealer (16): 10H, 6D (won, won)
+                    """),
+                    Arguments.of("Multiple Hit (2):", """
+                    (deal :2S :10H :AC :7D :3S :4H)
+                    (hit)
+                    (hit)
+                    """, """
+                    Dealer (? + 7): ?, 7D (waiting)
+                    """),
+                    Arguments.of("Multiple Ace Adjustment (2):", """
+                    (deal :2S :10H :AC :7D :AS :AH :AD)
+                    (hit)
+                    (hit)
+                    (hit)
+                    """, """
+                    Dealer (? + 7): ?, 7D (waiting)
                     """)
 
             );

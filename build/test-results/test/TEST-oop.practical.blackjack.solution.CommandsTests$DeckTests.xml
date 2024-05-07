@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$DeckTests" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:38" hostname="Elite.local" time="0.052">
+  <properties/>
+  <testcase name="testDeckRandom()" classname="oop.practical.blackjack.solution.CommandsTests$DeckTests" time="0.008"/>
+  <testcase name="[1] Empty Deck, (do)&#10;, Deck: (empty)" classname="oop.practical.blackjack.solution.CommandsTests$DeckTests" time="0.001"/>
+  <testcase name="[2] Single Card, (deck :2S)&#10;, Deck: 2S" classname="oop.practical.blackjack.solution.CommandsTests$DeckTests" time="0.015"/>
+  <testcase name="[3] Multiple Cards, (deck :2S :10H :AC :7D)&#10;, Deck: 2S, 10H, AC, 7D" classname="oop.practical.blackjack.solution.CommandsTests$DeckTests" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

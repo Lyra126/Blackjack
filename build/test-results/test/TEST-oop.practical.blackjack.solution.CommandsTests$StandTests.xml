@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$StandTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:38" hostname="Elite.local" time="0.029">
+  <properties/>
+  <testcase name="[1] Player Win, (deal :2S :10H :AC :7D)&#10;(stand)&#10;, Deck: (empty)&#10;Player (13): 2S, AC (lost)&#10;Dealer (17): 10H, 7D (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$StandTests" time="0.013"/>
+  <testcase name="[2] Player Loss, (deal :8S :10H :AC :7D)&#10;(stand)&#10;, Deck: (empty)&#10;Player (19): 8S, AC (won)&#10;Dealer (17): 10H, 7D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$StandTests" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

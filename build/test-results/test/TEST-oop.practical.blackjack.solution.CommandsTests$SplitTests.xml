@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$SplitTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:38" hostname="Elite.local" time="0.113">
+  <properties/>
+  <testcase name="[1] Split, (deal :10S :10H :10C :7D :6S :QC)&#10;(split)&#10;, Deck: (empty)&#10;Player (16): 10S, 6S (playing)&#10;Player (20): 10C, QC (waiting)&#10;Dealer (? + 7): ?, 7D (waiting, waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$SplitTests" time="0.016"/>
+  <testcase name="[2] Blackjack, (deal :10S :10H :10C :7D :6S :AC)&#10;(split)&#10;, Deck: (empty)&#10;Player (16): 10S, 6S (playing)&#10;Player (21): 10C, AC (won)&#10;Dealer (? + 7): ?, 7D (waiting, lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$SplitTests" time="0.023"/>
+  <testcase name="[3] First Hand Resolved, (deal :10S :10H :10C :7D :6S :QC)&#10;(split)&#10;(stand)&#10;, Deck: (empty)&#10;Player (16): 10S, 6S (resolved)&#10;Player (20): 10C, QC (playing)&#10;Dealer (? + 7): ?, 7D (waiting, waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$SplitTests" time="0.063"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

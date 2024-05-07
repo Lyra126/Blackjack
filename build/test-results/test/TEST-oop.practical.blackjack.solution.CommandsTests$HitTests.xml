@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$HitTests" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:38" hostname="Elite.local" time="0.108">
+  <properties/>
+  <testcase name="[1] Playing, (deal :2S :10H :AC :7D :5S)&#10;(hit)&#10;, Deck: (empty)&#10;Player (18): 2S, AC, 5S (playing)&#10;Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$HitTests" time="0.004"/>
+  <testcase name="[2] 21, (deal :2S :10H :AC :7D :8S)&#10;(hit)&#10;, Deck: (empty)&#10;Player (21): 2S, AC, 8S (won)&#10;Dealer (17): 10H, 7D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$HitTests" time="0.002"/>
+  <testcase name="[3] Ace Value Change, (deal :2S :10H :AC :7D :KS)&#10;(hit)&#10;, Deck: (empty)&#10;Player (13): 2S, AC, KS (playing)&#10;Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$HitTests" time="0.003"/>
+  <testcase name="[4] Busted, (deal :2S :10H :QC :7D :KS)&#10;(hit)&#10;, Deck: (empty)&#10;Player (22): 2S, QC, KS (busted)&#10;Dealer (17): 10H, 7D (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$HitTests" time="0.092"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

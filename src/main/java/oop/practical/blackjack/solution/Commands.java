@@ -154,13 +154,15 @@ public final class Commands {
             error = "Error: No cards available to hit";
             return "No cards available to hit";
         }
+
         if(!deck.isEmpty()) {
             //if player 1 already hit, then it's player2's turn
             player.updateHandStatus();
-            if(player.totalCards() % 2 == 1 && player2.totalCards() % 2 == 0) {
+            if(player.totalCards() % 2 == 1 && player2.totalCards() % 2 == 0 && player2.hasCards()) {
                 player2.addCard(deck.dealCard());
-                if (!deck.isEmpty() && dealer.calculateTotal() <= 16)
+                if (!deck.isEmpty() && dealer.calculateTotal() < 16) {
                     dealer.addCard(deck.dealCard());
+                }
                 player2.updateHandStatus();
                 player.hit(dealer, player2);
                 deck.updateStatus();
@@ -168,7 +170,7 @@ public final class Commands {
             } else{
                 player.addCard(deck.dealCard());
                 player.updateHandStatus();
-                if (!deck.isEmpty() && dealer.calculateTotal() <= 16)
+                if (!deck.isEmpty() && dealer.calculateTotal() <= 16 && !player2.hasCards())
                    dealer.addCard(deck.dealCard());
                 if (player2.hasCards())
                     player.hit(dealer, player2);

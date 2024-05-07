@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$DealTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:38" hostname="Elite.local" time="0.079">
+  <properties/>
+  <testcase name="[1] Existing Deck, (deck :2S :10H :AC :7D)&#10;(deal)&#10;, Deck: (empty)&#10;Player (13): 2S, AC (playing)&#10;Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.014"/>
+  <testcase name="[2] Custom Deck, (deal :2S :10H :AC :7D)&#10;, Deck: (empty)&#10;Player (13): 2S, AC (playing)&#10;Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.006"/>
+  <testcase name="[3] Empty Deck, (deal)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.002"/>
+  <testcase name="[1] Player Blackjack, (deal :JS :10H :AC :6D)&#10;, Deck: (empty)&#10;Player (21): JS, AC (won)&#10;Dealer (16): 10H, 6D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.005"/>
+  <testcase name="[2] Dealer Blackjack, (deal :2S :10H :AC :AD)&#10;, Deck: (empty)&#10;Player (13): 2S, AC (lost)&#10;Dealer (21): 10H, AD (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.009"/>
+  <testcase name="[3] Exactly 21 (Tied), (deal :2S :10H :AC :6D :8S :5H)&#10;(hit)&#10;, Deck: (empty)&#10;Player (21): 2S, AC, 8S (tied)&#10;Dealer (21): 10H, 6D, 5H (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.01"/>
+  <testcase name="[4] Empty Deck, (deal)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$DealTests" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

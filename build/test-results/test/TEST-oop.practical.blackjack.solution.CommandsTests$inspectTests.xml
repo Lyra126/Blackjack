@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="oop.practical.blackjack.solution.CommandsTests$inspectTests" tests="50" skipped="0" failures="0" errors="0" timestamp="2024-03-26T15:09:36" hostname="Elite.local" time="1.434">
+  <properties/>
+  <testcase name="[1] Inspect - Deck, (deck :2S :10H :AC :7D)&#10;, Deck: 2S, 10H, AC, 7D&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.344"/>
+  <testcase name="[1] Inspect - Error Present, (deal)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.097"/>
+  <testcase name="[2] Inspect - Error Absent, (deal :2S :10H :AC :7D)&#10;, " classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.057"/>
+  <testcase name="[3] Invalid Split, (deal :10S :10H :9C :7D)&#10;(split)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.011"/>
+  <testcase name="[4]  Empty Deck , (deal :JS :AD :10H :AH)&#10;(hit)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.02"/>
+  <testcase name="[5]  Stand Before Deal , (stand)&#10;(deal :JS :AD :10H :AH)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.009"/>
+  <testcase name="[6] Stand After Resolved, (deal :10S :10H :10C :7D :6S :QC)&#10;(split)&#10;(stand)&#10;(stand)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.018"/>
+  <testcase name="[7] Single Card (error), (deal :2S)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.003"/>
+  <testcase name="[8]  Empty Deck (error) (2), (deal :2S :10H :AC :7D)&#10;(hit)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.003"/>
+  <testcase name="[9]  Hit Before Deal (error), (hit)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[10]   Stand Before Deal (error) (1), (stand)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[11]    Stand After Resolved (error) (1), (deal :JS :10H :AC :6D)&#10;(stand)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[12] Double Down After Hit (error), (deal :2S :10H :AC :7D :6S :4H)&#10;(hit)&#10;(double-down)&#10;, null" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.01"/>
+  <testcase name="[1] Inspect - Dealer Waiting, (deal :2S :10H :AC :7D)&#10;, Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.016"/>
+  <testcase name="[2] Inspect - Dealer Resolved, (deal :10S :10H :AC :7D)&#10;, Dealer (17): 10H, 7D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.008"/>
+  <testcase name="[3] Dealer Blackjack (2), (deal :2S :10H :AC :AD)&#10;(inspect :dealer)&#10;, Dealer (21): 10H, AD (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[4] Player And Dealer Blackjack (2), (deal :JS :10H :AC :AD)&#10;(inspect :dealer)&#10;, Dealer (21): 10H, AD (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.008"/>
+  <testcase name="[5] Exactly 21 (Tied), (deal :2S :10H :AC :6D :8S :5H)&#10;(hit)&#10;, Dealer (21): 10H, 6D, 5H (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.009"/>
+  <testcase name="[6]  Empty Deck Recovery (2), (deal :2S :10H :AC :7D)&#10;(hit)&#10;(deck :5S)&#10;(hit)&#10;, Dealer (? + 7): ?, 7D (waiting)" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.009"/>
+  <testcase name="[7]  Stand (Tied) (2), (deal :8S :10H :AC :9D)&#10;(stand)&#10;, Dealer (19): 10H, 9D (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.009"/>
+  <testcase name="[8]   First Hand Busted (2), (deal :10S :10H :10C :7D :6S :QC :8H)&#10;(split)&#10;(hit)&#10;, Dealer (? + 7): ?, 7D (won, waiting)" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.017"/>
+  <testcase name="[9]  Both Hands Busted (Dealer Would Stand), (deal :10S :10H :10C :7D :6S :QC :8H :3D)&#10;(split)&#10;(hit)&#10;(hit)&#10;, Dealer (17): 10H, 7D (won, won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[10] Player And Dealer Bust (2), (deal :10S :10H :10C :6D :6S :QC :8H :8C)&#10;(split)&#10;(hit)&#10;(stand)&#10;, Dealer (24): 10H, 6D, 8C (won, busted)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.01"/>
+  <testcase name="[11] Player Loss (4), (deal :2S :10H :10C :7D :10S)&#10;(double-down)&#10;, Dealer (17): 10H, 7D (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.003"/>
+  <testcase name="[12] Stand (Tied) (2), (deal :6S :10H :AC :7D)&#10;(stand)&#10;, Dealer (17): 10H, 7D (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.005"/>
+  <testcase name="[13] Hit (Tied) (2), (deal :8S :10H :AC :6D :3S)&#10;(stand)&#10;, Dealer (19): 10H, 6D, 3S (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.011"/>
+  <testcase name="[14] Hit Multiple (2), (deal :2S :2H :AC :6D :3S :4H :5H)&#10;(stand)&#10;,  Dealer (20): 2H, 6D, 3S, 4H, 5H (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[15] Single Ace Adjustment (2), (deal :10H :5S :7D :AC :10S :4H)&#10;(stand)&#10;, Dealer (20): 5S, AC, 10S, 4H (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[16] Multiple Ace Adjustment (2), (deal :10H :AS :7D :AC :AH :AD :10S :4H)&#10;(stand)&#10;, Dealer (18): AS, AC, AH, AD, 10S, 4H (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.003"/>
+  <testcase name="[17]  Both Hands Busted (Dealer Would Hit), (deal :10S :10H :10C :6D :6S :QC :8H :3D)&#10;(split)&#10;(hit)&#10;(hit)&#10;, Dealer (16): 10H, 6D (won, won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.005"/>
+  <testcase name="[18] Multiple Hit (2):, (deal :2S :10H :AC :7D :3S :4H)&#10;(hit)&#10;(hit)&#10;, Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.005"/>
+  <testcase name="[19] Multiple Ace Adjustment (2):, (deal :2S :10H :AC :7D :AS :AH :AD)&#10;(hit)&#10;(hit)&#10;(hit)&#10;, Dealer (? + 7): ?, 7D (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.003"/>
+  <testcase name="[1] Inspect - Player Single, (deal :2S :10H :AC :7D)&#10;, Player (13): 2S, AC (playing)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[2] Inspect - Player Split, (deal :10S :10H :10C :7D :6S :QC)&#10;(split)&#10;, Player (16): 10S, 6S (playing)&#10;Player (20): 10C, QC (waiting)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[3] Dealer Blackjack (2), (deal :2S :10H :AC :AD)&#10;, Player (13): 2S, AC (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[4] Player And Dealer Blackjack (2), (deal :JS :10H :AC :AD)&#10;, Player (21): JS, AC (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[5] Exactly 21 (Tied), (deal :2S :10H :AC :6D :8S :5H)&#10;(hit)&#10;, Player (21): 2S, AC, 8S (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.005"/>
+  <testcase name="[6]  Empty Deck Recovery (2), (deal :2S :10H :AC :7D)&#10;(hit)&#10;(deck :5S)&#10;(hit)&#10;, Player (18): 2S, AC, 5S (playing)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[7]  Stand (Tied) (2), (deal :8S :10H :AC :9D)&#10;(stand)&#10;, Player (19): 8S, AC (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[8]   First Hand Busted (2), (deal :10S :10H :10C :7D :6S :QC :8H)&#10;(split)&#10;(hit)&#10;, Player (24): 10S, 6S, 8H (busted)&#10;Player (20): 10C, QC (playing)" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[9]  Both Hands Busted (Player), (deal :10S :10H :10C :7D :6S :QC :8H :3D)&#10;(split)&#10;(hit)&#10;(hit)&#10;, Player (24): 10S, 6S, 8H (busted)&#10;Player (23): 10C, QC, 3D (busted)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.026"/>
+  <testcase name="[10] Player And Dealer Bust (2), (deal :10S :10H :10C :6D :6S :QC :8H :8C)&#10;(split)&#10;(hit)&#10;(stand)&#10;, Player (24): 10S, 6S, 8H (busted)&#10;Player (20): 10C, QC (won)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[11] Player Loss (4), (deal :2S :10H :10C :7D :10S)&#10;(double-down)&#10;, Player (22): 2S, 10C, 10S (busted)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.008"/>
+  <testcase name="[12] Stand (Tied) (2), (deal :6S :10H :AC :7D)&#10;(stand)&#10;, Player (17): 6S, AC (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <testcase name="[13] Hit (Tied) (2), (deal :8S :10H :AC :6D :3S)&#10;(stand)&#10;, Player (19): 8S, AC (tied)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.008"/>
+  <testcase name="[14] Hit Multiple (2), (deal :2S :2H :AC :6D :3S :4H :5H)&#10;(stand)&#10;, Player (13): 2S, AC (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.004"/>
+  <testcase name="[15] Single Ace Adjustment (2), (deal :10H :5S :7D :AC :10S :4H)&#10;(stand)&#10;, Player (17): 10H, 7D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.01"/>
+  <testcase name="[16] Multiple Ace Adjustment (2), (deal :10H :AS :7D :AC :AH :AD :10S :4H)&#10;(stand)&#10;, Player (17): 10H, 7D (lost)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[17] Multiple Hit (2):, (deal :2S :10H :AC :7D :3S :4H)&#10;(hit)&#10;(hit)&#10;, Player (20): 2S, AC, 3S, 4H (playing)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.007"/>
+  <testcase name="[18] Multiple Ace Adjustment (2):, (deal :2S :10H :AC :7D :AS :AH :AD)&#10;(hit)&#10;(hit)&#10;(hit)&#10;, Player (16): 2S, AC, AS, AH, AD (playing)&#10;" classname="oop.practical.blackjack.solution.CommandsTests$inspectTests" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
